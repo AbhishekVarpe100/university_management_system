@@ -32,11 +32,14 @@ function Profile() {
     });
 
     if (response.data.message === 'profile_accessed') {
-      setTokenValid(true);
-      localStorage.setItem(
-        'token_expires_in',
-        `${(response.data.authData.exp - response.data.authData.iat) / 60} minutes`
-      );
+      if(localStorage.getItem('token') && localStorage.getItem('email') && localStorage.getItem('type')=='student'){
+        setTokenValid(true);
+        localStorage.setItem(
+          'token_expires_in',
+          `${(response.data.authData.exp - response.data.authData.iat) / 60} minutes`
+        );
+      }
+      
     } else if (response.data.result === 'invalid token') {
       setTokenValid(false);
       setTimeout(() => {
@@ -135,6 +138,15 @@ function Profile() {
                       onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
                     >
                       <span className="flex items-center">Results <CgNotes className='ml-2'></CgNotes></span>
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/profile/notices"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      <span className="flex items-center">Notice</span>
                     </Link>
                   </li>
                 </ul>

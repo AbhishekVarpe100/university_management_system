@@ -7,6 +7,8 @@ import ProfileRoutes from './Components/ProfileRoutes';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Profile from './Components/Profile';
 import { useSelector, useDispatch } from 'react-redux';
+import Admin from './Components/routes/admin_section/Admin';
+import Staff from './Components/routes/staff_section/Staff';
 
 function App() {
   const handleLogout = () => {
@@ -76,6 +78,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/admin" element={<Admin></Admin>} />
+            <Route path="/staff" element={<Staff></Staff>} />
             <Route path="/profile" element={<Profile />}>
               <Route path="/profile/*" element={<ProfileRoutes />} />
             </Route>

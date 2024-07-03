@@ -9,7 +9,8 @@ const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
+    type:''
   });
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
@@ -55,7 +56,7 @@ const RegistrationForm = () => {
             </div>
           );
         }
-        setFormData({ 'username': '', 'email': '', 'password': '' });
+        setFormData({ 'username': '', 'email': '', 'password': '','type':'' });
         setTimeout(() => {
           setSuccess("");
           setError("");
@@ -84,11 +85,20 @@ const RegistrationForm = () => {
         className="w-full max-w-md p-8 space-y-8 bg-blue-100 bg-opacity-90 rounded-lg shadow-md"
       >
         <h1 className="sea-waves text-center text-3xl font-bold h-40 pt-4">AcademiaHub University</h1>
-        <h2 className="text-2xl font-bold text-center text-gray-800">Student Register</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-800">Register</h2>
         {error}
         {success}
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
+            <label htmlFor="select">Select register type</label>
+          <select required name='type' value={formData.type} onChange={handleChange}
+                id="select"
+                className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
+                <option value="">---Select---</option>
+                <option value="student">Student</option>
+                <option value="staff">Staff</option>
+              </select>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
             <input
               type="text"

@@ -8,12 +8,11 @@ app.use(bodyParser.json());
 
 require('./Connection')
 
-
-
 const userRoutes=require('./routes/UserRoutes');
+const staffRoutes=require('./routes/StaffRoutes');
 
 app.use(userRoutes)
-
+app.use(staffRoutes)
 
 app.listen(3000,()=>{
     console.log(`App listening on port 3000`)

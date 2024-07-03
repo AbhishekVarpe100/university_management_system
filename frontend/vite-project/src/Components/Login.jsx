@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { motion } from 'framer-motion';
 import {useNavigate} from 'react-router-dom';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
 import { useSelector, useDispatch } from 'react-redux';
 function Login() {
   const [username, setUsername] = useState("");
@@ -23,25 +22,41 @@ function Login() {
       localStorage.setItem('token', `bearer ${response.data.token}`);
       localStorage.setItem('username', `${response.data.userName}`);
       localStorage.setItem('email', `${response.data.email}`);
+      localStorage.setItem('type', `${response.data.type}`);
       // alert(response.data.message ? response.data.message : response.data);
       
       // response.data.message=='login_success'?navigate('/profile') :<></>;
       // window.reload();
-      if(response.data.message=='login_success'){
-        setSuccess("Successfully login")
+      
+      if(response.data.message=='login_success_user'){
+        setSuccess(<b className="text-blue-600">Login successfully</b>)
         setTimeout(()=>{
           navigate('/profile')
-      response.data.message=='login_success'?dispatch({type:'USERNAME',payload:response.data.userName}) :<></>;
-      response.data.message=='login_success'?dispatch({type:'EMAIL',payload:response.data.email}) :<></>;
-      setSuccess("Successfully login")
+      dispatch({type:'USERNAME',payload:response.data.userName}) 
+     dispatch({type:'EMAIL',payload:response.data.email}) 
+      setSuccess('')
         },3000)
       }
-      else if(response.data=='user not found'){
-        setInvalidUsername('user not found');
+      
+      else if(response.data.message=='login_success_staff'){
+        setSuccess(<b className="text-blue-600">Login successfully</b>)
+        setTimeout(()=>{
+          navigate('/staff')
+      dispatch({type:'USERNAME',payload:response.data.userName}) 
+      dispatch({type:'EMAIL',payload:response.data.email})
+      setSuccess("")
+        },3000)
+      // alert("Hello")
       }
 
+      else if(response.data=='user not found'){
+        setInvalidUsername(<b className="text-red-600">User not found</b>);
+      }
+
+      
+
       else if(response.data=='incorrect password'){
-        setInvalidPassword("incorrect password");
+        setInvalidPassword(<b className="text-red-600">Incorrect password</b>);
       }
 
       setTimeout(()=>{
@@ -61,8 +76,11 @@ function Login() {
 
 
   useEffect(()=>{
-    if(localStorage.getItem('username') && localStorage.getItem('email')){
+    if(localStorage.getItem('username') && localStorage.getItem('email') && localStorage.getItem('type')=='student'){
       navigate('/profile');
+    }
+    else if(localStorage.getItem('username') && localStorage.getItem('email') && localStorage.getItem('type')=='staff'){
+      navigate('/staff')
     }
   },[])
 
@@ -74,6 +92,7 @@ function Login() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md p-4 sm:p-6 lg:p-8"
       >
+        
         <div className="bg-white shadow-xl rounded-lg p-8">
           <h2 className="text-3xl text-center font-bold mb-6">Login</h2>
           {success}
@@ -89,6 +108,7 @@ function Login() {
                 <option value="">---Select---</option>
                 <option value="student">Student</option>
                 <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
               </select>
             </div>
             <div className="mb-4">

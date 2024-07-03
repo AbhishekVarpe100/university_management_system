@@ -6,7 +6,7 @@ import store from './store';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
-    <div style={{ fontFamily : '"Playwrite NG Modern", cursive'}}>
+    <div style={{ fontFamily : '"Raleway", sans-serif'}}>
     <App />
     </div>
     </Provider>

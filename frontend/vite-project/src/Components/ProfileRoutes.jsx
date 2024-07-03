@@ -1,13 +1,14 @@
 import React from 'react'
-import Examinations from './routes/Examinations'
-import About from './routes/About'
-import Admissions from './routes/Admissions'
+import Examinations from './routes/stud_section/Examinations'
+import About from './routes/stud_section/About'
+import Admissions from './routes/stud_section/Admissions'
 import {Routes,Route} from 'react-router-dom';
-import Placements from './routes/Placements';
-import Campus from './routes/Campus';
-import Blogs from './routes/Blogs';
-import ContactUs from './routes/ContactUs';
-import Result from './routes/Result';
+import Placements from './routes/stud_section/Placements';
+import Campus from './routes/stud_section/Campus';
+import Blogs from './routes/stud_section/Blogs';
+import ContactUs from './routes/stud_section/ContactUs';
+import Result from './routes/stud_section/Result';
+import Notices from './routes/stud_section/Notices';
 function ProfileRoutes() {
   return (
     <>
@@ -21,6 +22,7 @@ function ProfileRoutes() {
         <Route path='blogs' element={<Blogs></Blogs>}></Route>
         <Route path='contact_us' element={<ContactUs></ContactUs>}></Route>
         <Route path='results' element={<Result></Result>}></Route>
+        <Route path='notices' element={<Notices></Notices>}></Route>
     </Routes>
 
     </>

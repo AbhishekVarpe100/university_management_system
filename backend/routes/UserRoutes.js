@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require('../models/User');
+const Staff=require('../models/Staff');
 const jwt=require('jsonwebtoken');
 const path=require('path')
 
@@ -10,38 +11,64 @@ require("../Connection");
 const secretKey='mysecretkey';
 
 router.post("/register", async (req, res) => {
-  const { username, email, password } = await req.body;
+  const { username, email, password,type} = await req.body;
 
-  const existingUser=await User.findOne({$or:[{username},{email}]});
-  if(existingUser){
+  if(type=='staff'){          //
+
+    const existingStaff=await Staff.findOne({$or:[{username},{email}]});
+    if(existingStaff){
+      res.json('user_exist');
+    }
+    else{
+  
+      const hashPassword=await bcrypt.hash(password,10);
+      const newStaff=await new Staff({username,email,password:hashPassword});
+      newStaff.save();
+      res.json('user_saved');
+    } 
+
+  }
+
+
+  else if(type=='student'){
+    const existingUser=await User.findOne({$or:[{username},{email}]});
+      if(existingUser){
     res.json('user_exist');
   }
-  else{
+      else{
 
     const hashPassword=await bcrypt.hash(password,10);
     const newUser=await new User({username,email,password:hashPassword});
     newUser.save();
     res.json('user_saved');
   }  
+  }
+  
+
+  
 });
 
 
 
 router.post('/login',async (req,res)=>{
+
+
  const {type,username,password}=req.body;
- const user=await User.findOne({username})
- if(user){
-  const isMatch=await bcrypt.compare(password,user.password);
+
+ if(type=='staff'){
+  const staff=await Staff.findOne({username})
+ if(staff){
+  const isMatch=await bcrypt.compare(password,staff.password);
   if(isMatch){
-    const userName=user.username;
-    const email=user.email;
-    jwt.sign({userName,email},secretKey,{expiresIn:'1h'},(err,token)=>{
+    const userName=staff.username;
+    const email=staff.email;
+    jwt.sign({userName,email},secretKey,{expiresIn:'1m'},(err,token)=>{
       if(err){
         console.log(err)
       }
       else{
-        res.json({token:token,message:'login_success',userName,email
-        });
+        res.json({token:token,message:'login_success_staff',userName,email,type
+      });
       }
     })
   }
@@ -53,10 +80,50 @@ router.post('/login',async (req,res)=>{
   res.json('user not found')
  }
 
+ }
+
+ else{
+
+
+  const user=await User.findOne({username})
+  if(user){
+   const isMatch=await bcrypt.compare(password,user.password);
+   if(isMatch){
+     const userName=user.username;
+     const email=user.email;
+     jwt.sign({userName,email},secretKey,{expiresIn:'1m'},(err,token)=>{
+       if(err){
+         console.log(err)
+       }
+       else{
+         res.json({token:token,message:'login_success_user',userName,email,type
+         });
+       }
+     })
+   }
+   else{
+     res.json('incorrect password');
+   }
+  }
+  else{
+   res.json('user not found')
+  }
+ }
 })
 
-
 router.post('/profile',verifyToken, (req,res)=>{
+  jwt.verify(req.token,secretKey,(err,authData)=>{ //req.token is passed from the verifyToken middleware
+    if(err){
+      res.json({result:"invalid token"})
+    }
+    else{
+      res.json({message:"profile_accessed",authData});
+    }
+  })
+
+})
+
+router.post('/staff',verifyToken, (req,res)=>{
   jwt.verify(req.token,secretKey,(err,authData)=>{ //req.token is passed from the verifyToken middleware
     if(err){
       res.json({result:"invalid token"})
@@ -73,7 +140,6 @@ function verifyToken(req,res,next){            //middleware function
   const bearerHeader=req.body.token_header;
   if(typeof bearerHeader!=='undefined'){
     const bearer=bearerHeader.split(" ");
-    // console.log(bearer[0]);
     const token=bearer[1];
     req.token=token;
     next();
