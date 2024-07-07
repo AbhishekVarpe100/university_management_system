@@ -27,7 +27,7 @@ function Profile() {
 
   async function sendToken() {
     let token_header = localStorage.getItem('token');
-    const response = await axios.post('http://localhost:3000/profile', {
+    const response = await axios.post('http://localhost:3000/getprofile', {
       token_header,
     });
 
@@ -38,7 +38,7 @@ function Profile() {
           'token_expires_in',
           `${(response.data.authData.exp - response.data.authData.iat) / 60} minutes`
         );
-      }
+      } 
       
     } else if (response.data.result === 'invalid token') {
       setTokenValid(false);

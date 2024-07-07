@@ -6,7 +6,8 @@ const initialState = {
   username:localStorage.getItem('username')? localStorage.getItem('username'):"",
   email:localStorage.getItem('email')? localStorage.getItem('email'): "",
   token:'',
-  token_expires_in:''
+  token_expires_in:'',
+  type:localStorage.getItem('type')
 };
 
 // Reducer function

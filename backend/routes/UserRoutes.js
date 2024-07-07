@@ -17,14 +17,14 @@ router.post("/register", async (req, res) => {
 
     const existingStaff=await Staff.findOne({$or:[{username},{email}]});
     if(existingStaff){
-      res.json('user_exist');
+      res.json('user_exist').status(409);
     }
     else{
   
       const hashPassword=await bcrypt.hash(password,10);
       const newStaff=await new Staff({username,email,password:hashPassword});
       newStaff.save();
-      res.json('user_saved');
+      res.json('user_saved').status(201);
     } 
 
   }
@@ -33,14 +33,14 @@ router.post("/register", async (req, res) => {
   else if(type=='student'){
     const existingUser=await User.findOne({$or:[{username},{email}]});
       if(existingUser){
-    res.json('user_exist');
+    res.json('user_exist').status(409);
   }
       else{
 
     const hashPassword=await bcrypt.hash(password,10);
     const newUser=await new User({username,email,password:hashPassword});
     newUser.save();
-    res.json('user_saved');
+    res.json('user_saved').status(201);
   }  
   }
   
@@ -68,21 +68,21 @@ router.post('/login',async (req,res)=>{
       }
       else{
         res.json({token:token,message:'login_success_staff',userName,email,type
-      });
+      }).status(200);
       }
     })
   }
   else{
-    res.json('incorrect password');
+    res.json('incorrect password').status(401);
   }
  }
  else{
-  res.json('user not found')
+  res.json('user not found').status(404);
  }
 
  }
 
- else{
+ else if(type=='student'){
 
 
   const user=await User.findOne({username})
@@ -91,33 +91,60 @@ router.post('/login',async (req,res)=>{
    if(isMatch){
      const userName=user.username;
      const email=user.email;
-     jwt.sign({userName,email},secretKey,{expiresIn:'1m'},(err,token)=>{
+     jwt.sign({userName,email},secretKey,{expiresIn:'1h'},(err,token)=>{
        if(err){
          console.log(err)
        }
        else{
          res.json({token:token,message:'login_success_user',userName,email,type
-         });
+         }).status(200);
        }
      })
    }
    else{
-     res.json('incorrect password');
+     res.json('incorrect password').status(401);
    }
   }
   else{
-   res.json('user not found')
+   res.json('user not found').status(409); 
   }
+ }
+
+ else if(type=='admin'){
+
+  const email='admin@academiahub@gmail.com';
+
+  if(username=='admin@academiahub_uni'){
+
+    if(password=='admin_1200'){
+      jwt.sign({username,email},secretKey,{expiresIn:'1h'},(err,token)=>{
+        if(err){
+          console.log(err)
+        }
+        else{
+          res.json({token:token,message:'login_success_admin',userName:username,email,type}).status(200)
+        }
+      })
+      
+    }
+    else{
+      res.json('incorrect password');
+    }
+  }
+  else{
+    res.json('user not found');
+  }  
+
  }
 })
 
-router.post('/profile',verifyToken, (req,res)=>{
+router.post('/getprofile',verifyToken, (req,res)=>{
   jwt.verify(req.token,secretKey,(err,authData)=>{ //req.token is passed from the verifyToken middleware
     if(err){
-      res.json({result:"invalid token"})
+      res.json({result:"invalid token"}).status(401)
     }
     else{
-      res.json({message:"profile_accessed",authData});
+      res.json({message:"profile_accessed",authData}).status(200);
     }
   })
 
@@ -126,15 +153,24 @@ router.post('/profile',verifyToken, (req,res)=>{
 router.post('/staff',verifyToken, (req,res)=>{
   jwt.verify(req.token,secretKey,(err,authData)=>{ //req.token is passed from the verifyToken middleware
     if(err){
-      res.json({result:"invalid token"})
+      res.json({result:"invalid token"}).status(401);
     }
     else{
-      res.json({message:"profile_accessed",authData});
+      res.json({message:"profile_accessed",authData}).status(200);
     }
   })
-
 })
 
+router.post('/admin',verifyToken, (req,res)=>{
+  jwt.verify(req.token,secretKey,(err,authData)=>{ //req.token is passed from the verifyToken middleware
+    if(err){
+      res.json({result:"invalid token"}).status(401);
+    }
+    else{
+      res.json({message:"profile_accessed",authData}).status(200);
+    }
+  })
+})
 
 function verifyToken(req,res,next){            //middleware function
   const bearerHeader=req.body.token_header;
@@ -147,13 +183,26 @@ function verifyToken(req,res,next){            //middleware function
   else{
     res.json({
       result:"token is not valid"  // it will show when the token is not available i.e empty
-    })
+    }).status(401);
   }
-
 }
 
 
 
+router.post('/getprofile_data',async (req,res)=>{
+  const {username,email,type}=req.body;
+  console.log(username,email,type);
+  if(type=='student'){
+    const user=await User.findOne({username,email})
+    res.json(user);
+  }
+  else if(type=='staff'){
+    const user=await Staff.findOne({username,email})
+    res.json(user);
+  }
+  else if(type=='admin'){
+  }
+})
 
 // router.get('/download_res', (req, res) => {
 //   const filePath = path.join(__dirname, '../models/User.js');
@@ -185,6 +234,8 @@ function verifyToken(req,res,next){            //middleware function
 //     console.error('Error downloading the file:', error);
 //   }
 // };
+
+
 
 
 

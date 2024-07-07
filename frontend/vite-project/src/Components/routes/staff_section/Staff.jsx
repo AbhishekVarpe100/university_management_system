@@ -6,21 +6,20 @@ function Staff() {
 
   const [tokenValid,setTokenValid]=useState(false);
 
+  
+
 
   useEffect(()=>{
     sendToken();
   },[]);
 
-
-  
   async function sendToken() {
     let token_header = localStorage.getItem('token');
     const response = await axios.post('http://localhost:3000/staff', {
       token_header,
     });
-
+    
     if (response.data.message === 'profile_accessed') {
-
       if(localStorage.getItem('token') && localStorage.getItem('email') && localStorage.getItem('type')=='staff'){
         setTokenValid(true);
       localStorage.setItem(
@@ -28,8 +27,7 @@ function Staff() {
         `${(response.data.authData.exp - response.data.authData.iat) / 60} minutes` 
       );
       }
-      
-    } else if (response.data.result === 'invalid token') {
+    } else if (response.data.result === 'invalid token'){
       setTokenValid(false);
       setTimeout(() => {
         localStorage.removeItem('username');
@@ -39,9 +37,9 @@ function Staff() {
       }, 3000);
     }
   }
-
-
+  
   return (
+
 
     <>
     {
@@ -57,10 +55,6 @@ function Staff() {
         
         
         </div >
-        
-        
-        
-        
         
         
         

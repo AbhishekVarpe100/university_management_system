@@ -17,10 +17,12 @@ const staffSchema = new Schema({
         type: String,
         required: true,
         unique: true,
+    },
+    photo:{
+        type:String,
     }
 });
 
 // Create the user model
 const Staff = mongoose.model('Staff', staffSchema);
-
 module.exports = Staff;

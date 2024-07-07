@@ -14,6 +14,7 @@ function Login() {
   const [success,setSuccess]=useState("");
   const [invalidUsername,setInvalidUsername]=useState("");
   const [invalidPassword,setInvalidPassword]=useState("");
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,10 +25,8 @@ function Login() {
       localStorage.setItem('email', `${response.data.email}`);
       localStorage.setItem('type', `${response.data.type}`);
       // alert(response.data.message ? response.data.message : response.data);
-      
       // response.data.message=='login_success'?navigate('/profile') :<></>;
       // window.reload();
-      
       if(response.data.message=='login_success_user'){
         setSuccess(<b className="text-blue-600">Login successfully</b>)
         setTimeout(()=>{
@@ -47,6 +46,16 @@ function Login() {
       setSuccess("")
         },3000)
       // alert("Hello")
+      }
+
+      else if(response.data.message=='login_success_admin'){
+        setSuccess(<b className="text-blue-600">Login successfully</b>)
+        setTimeout(()=>{
+          navigate('/admin')
+      dispatch({type:'USERNAME',payload:response.data.userName}) 
+      dispatch({type:'EMAIL',payload:response.data.email})
+      setSuccess("")
+        },3000)
       }
 
       else if(response.data=='user not found'){
