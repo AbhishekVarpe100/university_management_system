@@ -5,6 +5,7 @@ const User = require('../models/User');
 const Staff=require('../models/Staff');
 const jwt=require('jsonwebtoken');
 const path=require('path')
+const fs=require('fs');
 
 require("../Connection");
 
@@ -62,7 +63,7 @@ router.post('/login',async (req,res)=>{
   if(isMatch){
     const userName=staff.username;
     const email=staff.email;
-    jwt.sign({userName,email},secretKey,{expiresIn:'1m'},(err,token)=>{
+    jwt.sign({userName,email},secretKey,{expiresIn:'1h'},(err,token)=>{
       if(err){
         console.log(err)
       }
@@ -191,7 +192,6 @@ function verifyToken(req,res,next){            //middleware function
 
 router.post('/getprofile_data',async (req,res)=>{
   const {username,email,type}=req.body;
-  console.log(username,email,type);
   if(type=='student'){
     const user=await User.findOne({username,email})
     res.json(user);
@@ -200,8 +200,55 @@ router.post('/getprofile_data',async (req,res)=>{
     const user=await Staff.findOne({username,email})
     res.json(user);
   }
-  else if(type=='admin'){
+})  
+
+
+router.post('/delete_photo',async (req,res)=>{
+  const {id,type,photo}=req.body;
+  if(type=='student'){
+    fs.unlink(`Public/Profile_Images/${photo}`,(err)=>{
+      if(err){
+        console.log(err)
+      }
+    })
+    await User.updateOne({_id:id},{$unset:{photo:"",}})
+    res.json("deleted student");
   }
+  else if(type=='staff'){
+    fs.unlink(`Public/Profile_Images/${photo}`,(err)=>{
+      if(err){
+        console.log(err)
+      }
+    })
+    await Staff.updateOne({_id:id},{$unset:{photo:"",}})
+    res.json("deleted staff");
+  }
+})
+
+router.get('/delete_info',async(req,res)=>{
+  const {id,type}=req.query;
+  if(type=='student'){
+    await User.findByIdAndDelete(id);
+    res.json("deleted")
+  }
+  else if(type=='staff'){
+    await Staff.findOneAndDelete(id);
+    res.json("deleted")
+  }
+})
+
+router.post('/edit_info',async(req,res)=>{
+  const {id,username,email,type}=req.body;
+  if(type=='student'){
+    await User.updateOne({_id:id},{$set:{username:username,email:email}})
+    res.json("Edited student")
+  }
+  else if(type=='staff'){
+    await Staff.updateOne({_id:id},{$set:{username:username,email:email}})
+    res.json("Edited staff")
+
+  }
+
 })
 
 // router.get('/download_res', (req, res) => {

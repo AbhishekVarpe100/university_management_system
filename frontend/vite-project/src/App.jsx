@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../index.css';
+import axios from 'axios';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import Home from './Components/Home';
@@ -12,6 +13,7 @@ import Staff from './Components/routes/staff_section/Staff';
 import ProfilePhoto from './Components/ProfilePhoto';
 import EditPhoto from './Components/EditPhoto';
 import UploadPhoto from './Components/UploadPhoto';
+import EditInfo from './Components/EditInfo';
 
 function App() {
   const handleLogout = () => {
@@ -22,8 +24,27 @@ function App() {
     window.location.reload();
   };
 
-  const username = useSelector((state) => state.username);
-  const email = useSelector((state) => state.email);
+  const username=useSelector((state)=>state.username);
+  const email=useSelector((state)=>state.email);
+  const type=useSelector((state)=>state.type);
+  const [data,setData]=useState({});
+
+  const dataObj={
+    username:username,
+    email:email,
+    type:type,
+  }
+
+  async function getData(){
+    const response=await axios.post('http://localhost:3000/getprofile_data',dataObj);
+    setData(response.data)
+  }
+
+useEffect(() => {
+  getData();
+}, []);
+
+
 
   return (
     <>
@@ -49,7 +70,7 @@ function App() {
                   to="/login"
                   className="hover:underline hover:text-gray-400"
                 >
-                  Login
+                  Login   
                 </Link>
                 <Link
                   to="/register"
@@ -62,17 +83,16 @@ function App() {
           </div>
 
           {
-            localStorage.getItem('type')=='admin'? "":(
+            localStorage.getItem('type')=='admin' || (!localStorage.getItem('email')  && !localStorage.getItem('username')) ? "":(
               <div className="flex items-center space-x-4">
                 <div className="text-right">
                   <span>{username}</span><br />
                   <span>{email}</span>
                 </div>
-  
                 <Link to='/profile_img'>
                 <img title='profile'
                   className="w-10 h-10 rounded-full"
-                  src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                  src={!data.photo? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png' :`http://localhost:3000/Profile_Images/${data.photo}`}
                   alt="Profile Photo"
                 />
                 </Link>
@@ -88,6 +108,7 @@ function App() {
             <Route path="profile_img" element={<ProfilePhoto></ProfilePhoto>} />
             <Route path="profile_img/edit/:id/:type" element={<EditPhoto></EditPhoto>} />
             <Route path="profile_img/upload/:id/:type" element={<UploadPhoto></UploadPhoto>} />
+            <Route path="profile_img/edit_info/:id/:type" element={<EditInfo></EditInfo>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/admin" element={<Admin></Admin>} />
