@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { MdClose } from "react-icons/md";
+import { GiHamburgerMenu } from "react-icons/gi";
+import {Link,Outlet} from 'react-router-dom';
 function Staff() {
 
 
   const [tokenValid,setTokenValid]=useState(false);
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
-
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   useEffect(()=>{
     sendToken();
@@ -48,10 +53,121 @@ function Staff() {
       
       
       
-      <div className='pt-7'>
+      <div>
         
         
-        Staff accessed
+        <div className="flex my-4 py-4">
+            {/* Sidebar */}
+            <div className={`bg-gray-500 sidebar overflow-y-auto text-white w-64 min-h-screen flex-shrink-0 ${isSidebarOpen ? '' : 'hidden md:block'}`}>
+              <div className="p-4">
+                <h2 className="text-2xl font-bold mb-6">Content</h2>
+                <ul>
+                  <li className="mb-2">
+                    <Link
+                      to="/profile/about"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      About
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/profile/examinations"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+
+                      <span className="flex items-center">Examinations</span>
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/profile/admissions"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      Admissions
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/profile/placements"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      Placements
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/profile/campus"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      Campus Life
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/profile/blogs"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      <span className="flex items-center">
+                          Blogs
+                      </span>
+                      
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/profile/contact_us"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      <span className="flex items-center">
+
+                        Contact Us
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/profile/results"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      <span className="flex items-center">Results</span>
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/staff/notices_staff"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      <span className="flex items-center">Notice</span>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="flex-1 p-6 bg-gray-100">
+              <button
+                className="md:hidden p-4 bg-gray-800 text-white"
+                onClick={toggleSidebar}
+              >
+                {isSidebarOpen? <MdClose></MdClose> : <GiHamburgerMenu></GiHamburgerMenu> }
+              </button>
+              <div className="ml-4 md:ml-0">
+                <Outlet />
+              </div>
+            </div>
+            
+          </div>
         
         
         </div >

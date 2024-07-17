@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { MdClose } from "react-icons/md";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { Link, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FaBloggerB } from "react-icons/fa6";
@@ -159,7 +161,7 @@ function Profile() {
                 className="md:hidden p-4 bg-gray-800 text-white"
                 onClick={toggleSidebar}
               >
-                ☰
+                {isSidebarOpen? <MdClose></MdClose> : <GiHamburgerMenu></GiHamburgerMenu> }
               </button>
               <div className="ml-4 md:ml-0">
                 <Outlet />

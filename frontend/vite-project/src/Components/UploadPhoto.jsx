@@ -53,6 +53,7 @@ function UploadPhoto() {
                 value="Upload"
                 className="w-full cursor-pointer bg-gray-700 text-white py-2 rounded hover:bg-gray-800 transition duration-150 ease-in-out"
               />
+              <button onClick={()=>navigate('/profile_img')} className="w-full cursor-pointer bg-red-700 text-white py-2 rounded hover:bg-red-800 transition duration-150 ease-in-out">Cancel</button>
             </form>
           </center>
         </div>

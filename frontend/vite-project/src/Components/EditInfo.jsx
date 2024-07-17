@@ -81,8 +81,9 @@ function EditInfo() {
         <input
           type="submit"
           value="Edit"
-          className="bg-green-500 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-green-600 transition-colors"
+          className="bg-green-500 m-2 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-green-600 transition-colors"
         />
+        <button onClick={()=>navigate('/profile_img')} className="bg-red-500 m-2 text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-red-600 transition-colors">Cancel</button>
       </div>
     </form>
   

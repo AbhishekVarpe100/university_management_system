@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import {Link} from 'react-router-dom';
+import { MdClose } from "react-icons/md";
+import { GiHamburgerMenu } from "react-icons/gi";
+import {Link ,Outlet} from 'react-router-dom';
 function Admin() {
 
 
   const [tokenValid,setTokenValid]=useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
 
   useEffect(()=>{
@@ -38,27 +46,111 @@ function Admin() {
     }
   }
   
+  
   return (
-
     <>
     {
       tokenValid?
       
       
-      
-      
-      <div className='pt-7'>
-        
-        
-        Admin accessed
+        <div>
+        <div className="flex py-2">
+            {/* Sidebar */}
+            <div className={`bg-gray-500 sidebar overflow-y-auto text-white w-64 min-h-screen flex-shrink-0 ${isSidebarOpen ? '' : 'hidden md:block'}`}>
+              <div className="p-4">
+                <h2 className="text-2xl font-bold mb-6">Content</h2>
+                <ul>
+                  <li className="mb-2">
+                    <Link
+                      to="/admin/announcement"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      Create notice/announcements
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/admin/add_videos"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+
+                      <span className="flex items-center">Add Videos</span>
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/admin/statistics"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      Admissions statistics
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/admin/add_placements"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      Add placements
+                    </Link>
+                  </li>
+
+                  <li className="mb-2">
+                    <Link
+                      to="/admin/add_blogs"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      Add blogs
+                    </Link>
+                  </li>
+
+                  <li className="mb-2">
+                    <Link
+                      to="/admin/stud_voice"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      Students voice
+                    </Link>
+                  </li>
+                  
+                  
+                  
+                  
+                </ul>
+              </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="flex-1 p-6 bg-gray-100">
+              <button
+                className="md:hidden p-4 bg-gray-800 text-white"
+                onClick={toggleSidebar}
+              >
+                {isSidebarOpen? <MdClose></MdClose> : <GiHamburgerMenu></GiHamburgerMenu> }
+              </button>
+              <div className="ml-4 md:ml-0">
+                <Outlet />
+              </div>
+            </div>
+            
+          </div>
         
         
         </div >
+        
+        
+       
 
         
         
         
         :(
+
         <div className="m-10">
           Your token has expired{' '}
           <Link

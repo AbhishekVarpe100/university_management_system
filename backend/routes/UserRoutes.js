@@ -2,10 +2,13 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require('../models/User');
+const Notice = require('../models/Announcement');
 const Staff=require('../models/Staff');
+const Blog = require('../models/Blog')
 const jwt=require('jsonwebtoken');
 const path=require('path')
 const fs=require('fs');
+const Placement = require("../models/Placements");
 
 require("../Connection");
 
@@ -250,6 +253,58 @@ router.post('/edit_info',async(req,res)=>{
   }
 
 })
+
+
+
+router.post('/create_notice',async(req,res)=>{
+  const notice=req.body.notice;
+  const newNotice=new Notice({notice});
+  newNotice.save();
+  res.json("response");
+})
+
+router.get('/get_notices',async(req,res)=>{
+  const data=await Notice.find();
+  res.json(data).status(200)
+})
+
+router.post('/delete_notice',async(req,res)=>{
+  const id=req.body.id;
+  await Notice.findByIdAndDelete(id);
+  res.json("deleted");
+})
+
+
+router.post('/get_placements_data',async(req,res)=>{
+  const data=await Placement.find();
+  res.json(data)
+})
+
+router.post('/delete_placement_info',async(req,res)=>{
+  const id=req.body.id;
+  const photo=await Placement.findOne({ _id: id }, { photo: 1 });
+  await fs.unlinkSync(`Public/Placement_Images/${photo.photo}`)
+  await Placement.findByIdAndDelete(id);
+  res.json("deleted");
+ 
+})
+
+router.post('/get_blogs_data',async(req,res)=>{
+  const data=await Blog.find();
+  res.json(data)
+})
+
+router.post('/delete_blog_info',async(req,res)=>{
+  const id=req.body.id;
+  const photo=await Blog.findOne({ _id: id }, { image: 1 });
+  await fs.unlinkSync(`Public/Blog_Images/${photo.image}`)
+  await Blog.findByIdAndDelete(id);
+  res.json("deleted");
+ 
+})
+
+
+
 
 // router.get('/download_res', (req, res) => {
 //   const filePath = path.join(__dirname, '../models/User.js');

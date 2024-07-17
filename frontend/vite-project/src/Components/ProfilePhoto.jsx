@@ -8,7 +8,6 @@ import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 
 function ProfilePhoto() {
-
   const navigate=useNavigate();
   const [loader, setLoader] = useState(true);
   const username=useSelector((state)=>state.username);
@@ -70,7 +69,9 @@ function ProfilePhoto() {
         </div>
       ) : (
         <div className="p-10">
+          
         <section className="p-6 bg-white rounded-lg shadow-2xl max-w-md mx-auto">
+        <h1 className='text-lg'>Your Profile</h1>
   <div className="flex flex-col items-center">
     <img
       src={!data.photo ? 'http://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png' : `http://localhost:3000/Profile_Images/${data.photo}`}
@@ -80,7 +81,7 @@ function ProfilePhoto() {
     {!data.photo ? (
       <Link
         to={`/profile_img/upload/${data._id}/${type}`}
-        className="bg-green-500 text-white px-4 py-2 rounded-lg mb-4"
+        className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg mb-4"
       >
         <FiUploadCloud title='upload photo'></FiUploadCloud>
       </Link>
@@ -88,13 +89,13 @@ function ProfilePhoto() {
       <div className="flex space-x-4 mb-4">
         <Link
           to={`/profile_img/edit/${data._id}/${type}`}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+          className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg"
         >
           <MdEdit title='edit photo'></MdEdit>
         </Link>
         <button
           onClick={() => handleDelete(data._id, type, data.photo)}
-          className="bg-red-600 text-white px-4 py-2 rounded-lg"
+          className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg"
         >
           <MdDelete title='delete photo'></MdDelete>
         </button>
@@ -107,13 +108,13 @@ function ProfilePhoto() {
       <div className="mt-4 space-y-2">
         <Link
           to={`/profile_img/edit_info/${data._id}/${type}`}
-          className="bg-blue-600 text-white m-4 px-4 py-2 rounded-lg"
+          className="bg-blue-600 hover:bg-blue-500 text-white m-4 px-4 py-2 rounded-lg"
         >
           Edit Info
         </Link>
         <button
           onClick={() => handleDeleteAcc(data._id, type)}
-          className="bg-red-600 text-white m-4 px-4 py-1 rounded-lg"
+          className="bg-red-600 hover:bg-red-500 text-white m-4 px-4 py-1 rounded-lg"
         >
           Delete Account
         </button>

@@ -14,6 +14,10 @@ import ProfilePhoto from './Components/ProfilePhoto';
 import EditPhoto from './Components/EditPhoto';
 import UploadPhoto from './Components/UploadPhoto';
 import EditInfo from './Components/EditInfo';
+import Announcement from './Components/routes/admin_section/Announcement';
+import AdminRoutes from './Components/AdminRoutes';
+import StaffRoutes from './Components/StaffRoutes';
+
 
 function App() {
   const handleLogout = () => {
@@ -111,8 +115,15 @@ useEffect(() => {
             <Route path="profile_img/edit_info/:id/:type" element={<EditInfo></EditInfo>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/admin" element={<Admin></Admin>} />
-            <Route path="/staff" element={<Staff></Staff>} />
+            <Route path="/admin" element={<Admin></Admin>}>
+            <Route path='/admin/*' element={<AdminRoutes></AdminRoutes>}/>            
+            </Route>
+
+            <Route path="/staff" element={<Staff></Staff>}> 
+              <Route path='/staff/*' element={<StaffRoutes></StaffRoutes>}></Route>
+            </Route>
+
+
             <Route path="/profile" element={<Profile/>}>
               <Route path="/profile/*" element={<ProfileRoutes />} />
             </Route>

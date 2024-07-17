@@ -6,6 +6,8 @@ const User = require('../models/User');
 const fs=require('fs');
 const Staff=require('../models/Staff');
 const connection=require('../Connection');
+const Placement = require("../models/Placements");
+const Blog = require('../models/Blog')
 
 const storage=multer.diskStorage({
     destination:(req,file,cb)=>{
@@ -64,6 +66,50 @@ router.post('/edit_photo',upload.single('file'),async (req,res)=>{
         res.json('uploaded');
     }
     
+})
+
+
+const placement_storage=multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null, "Public/Placement_Images")
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+
+const placement_upload=multer({
+    storage:placement_storage
+})
+
+router.post('/create_placement',placement_upload.single('file'),async(req,res)=>{
+    const {name,package_,company}=req.body;
+    const file=req.file.filename;
+    const newPlacement=new Placement({name,package_,photo:file,company});
+    newPlacement.save();
+    res.json("created");
+})
+
+
+const blog_storage=multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null, "Public/Blog_Images")
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+
+const blog_upload=multer({
+    storage:blog_storage
+})
+
+router.post('/add_blog',blog_upload.single('file'),async(req,res)=>{
+    const {title,description}=req.body;
+    const file=req.file.filename;
+    const blog= new Blog({title,description,image:file});
+    blog.save();
+    res.json("blog created");
 })
 
 module.exports=router;
