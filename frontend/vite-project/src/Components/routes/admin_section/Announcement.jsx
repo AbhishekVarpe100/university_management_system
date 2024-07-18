@@ -9,14 +9,14 @@ function Announcement() {
     const handleSubmit=async(e)=>{
         e.preventDefault();
         const res=await axios.post('http://localhost:3000/create_notice',{notice});
-        change==true? setChange(false):setChange(true);
+        change? setChange(false):setChange(true);
         
     }
 
 
     const handleDelete=async (id)=>{
      const res= await axios.post('http://localhost:3000/delete_notice',{id})
-      change==true? setChange(false):setChange(true);
+      change? setChange(false):setChange(true);
     }
 
     const getData=async()=>{

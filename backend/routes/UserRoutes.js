@@ -9,6 +9,7 @@ const jwt=require('jsonwebtoken');
 const path=require('path')
 const fs=require('fs');
 const Placement = require("../models/Placements");
+const Video = require("../models/Video");
 
 require("../Connection");
 
@@ -301,6 +302,20 @@ router.post('/delete_blog_info',async(req,res)=>{
   await Blog.findByIdAndDelete(id);
   res.json("deleted");
  
+})
+
+router.post('/get_videos',async(req,res)=>{
+  let data= await Video.find();
+  res.json(data)
+})
+
+
+router.delete('/delete_video',async(req,res)=>{
+  const id=req.body.id;
+  const videoFile=await Video.findOne({_id:id},{video:1});
+  await fs.unlinkSync(`Public/Videos/${videoFile.video}`);
+  await Video.findByIdAndDelete(id);
+  res.json('deleted')
 })
 
 

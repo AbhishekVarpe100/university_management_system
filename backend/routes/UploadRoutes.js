@@ -7,7 +7,8 @@ const fs=require('fs');
 const Staff=require('../models/Staff');
 const connection=require('../Connection');
 const Placement = require("../models/Placements");
-const Blog = require('../models/Blog')
+const Blog = require('../models/Blog');
+const Video = require("../models/Video");
 
 const storage=multer.diskStorage({
     destination:(req,file,cb)=>{
@@ -112,5 +113,34 @@ router.post('/add_blog',blog_upload.single('file'),async(req,res)=>{
     res.json("blog created");
 })
 
+
+
+const video_storage=multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null, "Public/Videos")
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+    }
+})
+
+const video_upload=multer({
+    storage:video_storage
+})
+
+router.post('/add_video',video_upload.single('file'),(req,res)=>{
+    const file=req.file.filename;
+    const nameArr=file.split(".");
+    const validFileTypes = ['video/mp4', 'video/avi', 'video/mkv', 'video/mov'];
+    // const title=req.body.title;
+    if(validFileTypes.includes('video/'+nameArr[1])){
+        const newVideo=new Video({title:req.body.title,video:file});
+        newVideo.save();
+        res.json({message:'Video added'});
+    }
+    else{
+        res.json({message:'Invalid file format'});
+    }
+})
 module.exports=router;
 
