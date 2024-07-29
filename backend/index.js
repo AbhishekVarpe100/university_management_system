@@ -2,6 +2,9 @@ const express=require('express');
 const app=express();
 const bodyParser=require('body-parser');
 const cors=require('cors');
+const status=require('express-status-monitor')
+
+app.use(status())
 app.use(cors())
 require('dotenv').config()
 app.use(bodyParser.json());

@@ -4,12 +4,14 @@ const bcrypt = require("bcrypt");
 const User = require('../models/User');
 const Notice = require('../models/Announcement');
 const Staff=require('../models/Staff');
+const Contact=require('../models/Contact');
 const Blog = require('../models/Blog')
 const jwt=require('jsonwebtoken');
 const path=require('path')
 const fs=require('fs');
 const Placement = require("../models/Placements");
 const Video = require("../models/Video");
+const { isDate } = require("util/types");
 
 require("../Connection");
 
@@ -320,6 +322,38 @@ router.delete('/delete_video',async(req,res)=>{
 
 
 
+router.post('/users_query',async (req,res)=>{   
+  const {name,email,phone,course,message,username,user_email}=req.body;
+  const istDate = new Date(new Date().getTime() + (5 * 60 + 30) * 60000);
+  const newQuery =await  new Contact({name:name,email:email,phone:phone,course:course,message:message,
+    username:username,user_email:user_email, timestamp:istDate});
+  newQuery.save();
+  res.json('send');
+})
+
+
+router.get('/get_queries',async(req,res)=>{
+  let data=await Contact.find({username:req.query.username,user_email:req.query.email})
+  res.json(data)
+})
+
+router.get('/get_queries_all',async(req,res)=>{
+  let data=await Contact.find();
+  res.json(data)
+})
+
+router.post('/reply',async (req,res)=>{
+  const {id,reply}=req.body;
+  await Contact.findByIdAndUpdate({_id:id},{$set:{admin_reply:reply}});
+  res.json("Reply send");
+})
+
+
+router.delete('/delete_query/:id',async (req,res)=>{
+  const id=req.params.id;
+  await Contact.findByIdAndDelete(id);
+  res.json("Deleted")
+})
 
 // router.get('/download_res', (req, res) => {
 //   const filePath = path.join(__dirname, '../models/User.js');

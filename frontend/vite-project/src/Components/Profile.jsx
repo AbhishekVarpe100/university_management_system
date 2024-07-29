@@ -106,7 +106,7 @@ function Profile() {
                       className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
                       onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
                     >
-                      Campus Life
+                      Campus and events videos
                     </Link>
                   </li>
                   <li className="mb-2">
