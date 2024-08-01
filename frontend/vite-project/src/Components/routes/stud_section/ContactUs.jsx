@@ -41,7 +41,7 @@ function ContactUs() {
 
   const handleDelete = async (id) => {
     const res = await axios.delete(`http://localhost:3000/delete_query/${id}`);
-    alert("deleted");
+    alert(res.data);
   };
 
   return (
@@ -137,7 +137,7 @@ function ContactUs() {
                 </button>
               </div>
               <div className="text-gray-600">
-                {ele.admin_reply ? <> <b className='text-green-500'>Admin reply : </b> {ele.admin_reply}</> : <><b className='text-red-400'>Status : </b> Not seen yet</>}
+                {ele.admin_reply ? <> <b className='text-green-500'>Admin reply : </b> {ele.admin_reply}</> : <><b className='text-red-500'>Status : </b> Not seen yet</>}
               </div>
             </div>
           ))}

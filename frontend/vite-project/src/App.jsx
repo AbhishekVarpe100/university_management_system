@@ -15,8 +15,18 @@ import EditPhoto from './Components/EditPhoto';
 import UploadPhoto from './Components/UploadPhoto';
 import EditInfo from './Components/EditInfo';
 import Announcement from './Components/routes/admin_section/Announcement';
-import AdminRoutes from './Components/AdminRoutes';
+// import AdminRoutes from './Components/AdminRoutes';
 import StaffRoutes from './Components/StaffRoutes';
+import Admissions_Routes from './Components/Admissions_Routes';
+import New_course from './Components/routes/admin_section/New_course';
+
+import Statistics from './Components/routes/admin_section/Statistics';
+import Add_Placements from './Components/routes/admin_section/Add_Placements';
+import Add_Videos from './Components/routes/admin_section/Add_Videos';
+import Add_blogs from './Components/routes/admin_section/Add_blogs';
+import Student_voice from './Components/routes/admin_section/Student_voice';
+import Admission_adm from './Components/routes/admin_section/Admissions_adm';
+import All_Admissions from './Components/routes/admin_section/All_Admissions';
 
 
 function App() {
@@ -115,15 +125,38 @@ useEffect(() => {
             <Route path="profile_img/edit_info/:id/:type" element={<EditInfo></EditInfo>} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/admin" element={<Admin></Admin>}>
-            <Route path='/admin/*' element={<AdminRoutes></AdminRoutes>}/>            
-            </Route>
+
+
+          <Route path="/admin" element={<Admin></Admin>}>
+
+
+
+        <Route path='announcement' element={<Announcement></Announcement>}></Route>
+        <Route path='add_videos' element={<Add_Videos></Add_Videos>}></Route>
+        <Route path='statistics' element={<Statistics></Statistics>}></Route>
+        <Route path='add_placements' element={<Add_Placements></Add_Placements>}></Route>
+        <Route path='add_blogs' element={<Add_blogs></Add_blogs>}></Route>
+        <Route path='stud_voice' element={<Student_voice></Student_voice>}></Route>
+
+
+        <Route path='admission_adm' element={<Admission_adm></Admission_adm>}>
+        <Route path='new_course' element={<New_course></New_course>}></Route>
+        <Route path='all_adm' element={<All_Admissions></All_Admissions>}></Route>
+        
+        </Route>
+
+
+            {/* <Route path='*' element={<AdminRoutes></AdminRoutes>}> 
+              <Route path='admission_adm/*' element={<Admissions_Routes></Admissions_Routes>}></Route>
+            </Route>        */}
+
+
+
+          </Route>
 
             <Route path="/staff" element={<Staff></Staff>}> 
               <Route path='/staff/*' element={<StaffRoutes></StaffRoutes>}></Route>
             </Route>
-
-
             <Route path="/profile" element={<Profile/>}>
               <Route path="/profile/*" element={<ProfileRoutes />} />
             </Route>

@@ -34,7 +34,7 @@ function StudentVoice() {
     <div className="container mx-auto p-4">
       {queries.length > 0 ? (
         <div>
-          <div className="text-lg font-bold mb-4">Your queries</div>
+          <div className="text-lg font-bold mb-4">Queries</div>
           {queries.map((ele) => (
             <div 
               key={ele._id} 
@@ -81,7 +81,7 @@ function StudentVoice() {
                   />
                 </form>  <button 
                   onClick={() => handleClick(ele._id)} 
-                  className="bg-blue-500 text-white px-4 py-2 rounded mt-2 md:mt-0 cursor-pointer hover:bg-blue-600"
+                  className="bg-green-600 text-white px-4 py-2 rounded mt-2 md:mt-0 cursor-pointer hover:bg-green-500"
                 >
                   <b> Reply</b> 
                 </button>

@@ -7,10 +7,12 @@ import Placements from './routes/stud_section/Placements';
 import Add_Placements from './routes/admin_section/Add_Placements';
 import Add_blogs from './routes/admin_section/Add_blogs';
 import Student_voice from './routes/admin_section/Student_voice';
+import Admission_adm from './routes/admin_section/Admissions_adm';
 
 function AdminRoutes(){
   return (
     <>
+
     <Routes>
         <Route path='announcement' element={<Announcement></Announcement>}></Route>
         <Route path='add_videos' element={<Add_Videos></Add_Videos>}></Route>
@@ -18,7 +20,9 @@ function AdminRoutes(){
         <Route path='add_placements' element={<Add_Placements></Add_Placements>}></Route>
         <Route path='add_blogs' element={<Add_blogs></Add_blogs>}></Route>
         <Route path='stud_voice' element={<Student_voice></Student_voice>}></Route>
+        <Route path='admission_adm' element={<Admission_adm></Admission_adm>}></Route>
     </Routes>
+    
     </>
   )
 }

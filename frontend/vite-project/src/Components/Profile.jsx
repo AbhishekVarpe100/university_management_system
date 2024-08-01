@@ -59,7 +59,7 @@ function Profile() {
         <>
           <div className="flex my-4 py-4">
             {/* Sidebar */}
-            <div className={`bg-gray-500 sidebar overflow-y-auto text-white w-64 min-h-screen flex-shrink-0 ${isSidebarOpen ? '' : 'hidden md:block'}`}>
+            <div className={`sidebar overflow-y-auto bg-violet-200 text-white w-64 min-h-screen flex-shrink-0 ${isSidebarOpen ? '' : 'hidden md:block'}`}>
               <div className="p-4">
                 <h2 className="text-2xl font-bold mb-6">Content</h2>
                 <ul>

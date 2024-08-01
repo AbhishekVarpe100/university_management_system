@@ -26,7 +26,7 @@ const contactSchema = new Schema({
         type:String,
     },
 
-    timestamp: { type: Date, default: Date.now },
+    timestamp: { type: String, },
     
     admin_reply :{
         type:String,

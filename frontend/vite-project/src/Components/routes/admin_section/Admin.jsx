@@ -90,6 +90,15 @@ function Admin() {
                   </li>
                   <li className="mb-2">
                     <Link
+                      to="/admin/admission_adm"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      Admissions
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
                       to="/admin/add_placements"
                       className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
                       onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
@@ -117,6 +126,8 @@ function Admin() {
                       Students voice
                     </Link>
                   </li>
+
+                  
                   
                   
                   

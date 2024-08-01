@@ -11,6 +11,7 @@ const path=require('path')
 const fs=require('fs');
 const Placement = require("../models/Placements");
 const Video = require("../models/Video");
+const Course = require("../models/Course");
 const { isDate } = require("util/types");
 
 require("../Connection");
@@ -324,11 +325,35 @@ router.delete('/delete_video',async(req,res)=>{
 
 router.post('/users_query',async (req,res)=>{   
   const {name,email,phone,course,message,username,user_email}=req.body;
+  function formatISTDate(date) {
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+      timeZone: 'Asia/Kolkata'
+    };
+  
+    const formattedDate = date.toLocaleString('en-IN', options);
+    
+    // Split date and time
+    const [datePart, timePart] = formattedDate.split(', ');
+  
+    // Replace month name to lower case and combine
+    return `${datePart.toLowerCase()}`;
+  }
+  
   const istDate = new Date(new Date().getTime() + (5 * 60 + 30) * 60000);
+  const formattedISTDate = formatISTDate(istDate);
+
+console.log(formattedISTDate)
   const newQuery =await  new Contact({name:name,email:email,phone:phone,course:course,message:message,
-    username:username,user_email:user_email, timestamp:istDate});
+    username:username,user_email:user_email, timestamp:formattedISTDate});
   newQuery.save();
-  res.json('send');
+  res.json('Send');
 })
 
 
@@ -353,6 +378,31 @@ router.delete('/delete_query/:id',async (req,res)=>{
   const id=req.params.id;
   await Contact.findByIdAndDelete(id);
   res.json("Deleted")
+})
+
+
+
+router.post('/add_course',async(req,res)=>{
+  let {courseName,fees,perYearFees}=req.body;
+  const newCourse =await  new Course({course_name:courseName,fees,perYearFees})
+  newCourse.save();
+  res.json('Course added');
+})
+
+router.get('/get_courses',async(req,res)=>{
+  const data=await Course.find();
+  res.json(data);
+})
+
+
+router.delete('/delete_course/:id',async(req,res)=>{
+  const id=req.params.id;
+  await Course.findByIdAndDelete(id);
+  res.json("Course deleted");
+})
+
+router.post('/add_admission',(req,res)=>{
+  console.log(req.body)
 })
 
 // router.get('/download_res', (req, res) => {
