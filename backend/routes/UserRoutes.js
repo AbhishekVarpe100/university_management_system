@@ -12,6 +12,7 @@ const fs=require('fs');
 const Placement = require("../models/Placements");
 const Video = require("../models/Video");
 const Course = require("../models/Course");
+const Admission =require("../models/Admission");
 const { isDate } = require("util/types");
 
 require("../Connection");
@@ -401,9 +402,43 @@ router.delete('/delete_course/:id',async(req,res)=>{
   res.json("Course deleted");
 })
 
-router.post('/add_admission',(req,res)=>{
-  console.log(req.body)
+router.post('/add_admission',async(req,res)=>{
+  const {course,name,marks_10,marks_12,username,email}=req.body;
+  const new_admission=await Admission({username,email,course,name,percent_10th:marks_10,percent_12th:marks_12});
+
+  new_admission.save();
+  res.json({msg:'Submitted'})
+  
 })
+
+router.get('/get_admission_data',async (req,res)=>{
+  let ad_data=await Admission.find({username:req.query.username,email:req.query.email});
+  res.json({admission_data:ad_data})
+})
+
+router.get('/get_admission_data_all',async (req,res)=>{
+  let ad_data=await Admission.find();
+  res.json({admission_data:ad_data})
+})
+
+router.delete('/delete_admission/:id',async (req,res)=>{
+    await Admission.findByIdAndDelete({_id:req.params.id});
+    res.json("delete");
+})
+
+router.put('/approve',async(req,res)=>{
+  const id=req.body.id;
+  await Admission.findByIdAndUpdate({_id:id},{$set:{status:'approve'}});
+  res.json('updated');
+})
+
+router.put('/not_approve',async(req,res)=>{
+  const id=req.body.id;
+  await Admission.findByIdAndUpdate({_id:id},{$set:{status:'not_approve'}});
+  res.json('updated');
+})
+
+
 
 // router.get('/download_res', (req, res) => {
 //   const filePath = path.join(__dirname, '../models/User.js');
