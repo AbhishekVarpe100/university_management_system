@@ -14,6 +14,7 @@ const Video = require("../models/Video");
 const Course = require("../models/Course");
 const Admission =require("../models/Admission");
 const { isDate } = require("util/types");
+const Subject = require("../models/Subjects");
 
 require("../Connection");
 
@@ -436,6 +437,24 @@ router.put('/not_approve',async(req,res)=>{
   const id=req.body.id;
   await Admission.findByIdAndUpdate({_id:id},{$set:{status:'not_approve'}});
   res.json('updated');
+})
+
+router.post('/add_sub',async(req,res)=>{
+  const {sub,marks}=req.body;
+  const sub_to_add=await new Subject({sub_name:sub,marks});
+  sub_to_add.save();
+  res.json('added')
+})
+
+router.get('/get_sub_data',async(req,res)=>{
+  const data=await Subject.find();
+  res.json(data);
+})
+
+router.delete('/delete_sub/:id',async(req,res)=>{
+  await Subject.findByIdAndDelete({_id:req.params.id});
+  res.json("deleted");
+
 })
 
 

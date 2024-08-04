@@ -19,7 +19,7 @@ function Notices() {
     data.length > 0 ? 
     data.map((ele) => {
       return (
-        <div key={ele._id} className='bg-white p-5 mb-3 rounded-lg shadow-lg hover:bg-blue-100 transition duration-300'>
+        <div key={ele._id} className='bg-white p-5 mb-3 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300'>
           {ele.notice}
         </div>
       );

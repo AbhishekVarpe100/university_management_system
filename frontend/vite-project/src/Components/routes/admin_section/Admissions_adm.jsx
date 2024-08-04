@@ -13,6 +13,9 @@ function Admission_adm() {
                         <Link className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700" to="/admin/admission_adm/all_adm">
                             Admissions
                         </Link>
+                        <Link className="px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-700" to="/admin/admission_adm/add_sub">
+                            Add Subjects
+                        </Link>
                     </div>
                 </div>
             </nav>

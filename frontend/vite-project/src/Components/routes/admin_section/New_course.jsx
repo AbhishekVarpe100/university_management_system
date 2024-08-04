@@ -60,31 +60,43 @@ function New_course() {
             </form>
         </div>
 
-    {data.length>0?  data.map((item)=>{
+        {data.length > 0 ? (
+  <div className="overflow-x-auto p-4">
+    <div> <b>Total courses : {data.length}</b> </div>
+    <table className="table-auto w-full bg-white shadow-lg rounded-lg">
+      <thead>
+        <tr className="bg-indigo-600 text-white">
+          <th className="px-6 py-3 text-left">Course Name</th>
+          <th className="px-6 py-3 text-left">Total Course Fees</th>
+          <th className="px-6 py-3 text-left">Per Year Fees</th>
+          <th className="px-6 py-3 text-left">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((item) => (
+          <tr key={item._id}  className="even:bg-gray-200 odd:bg-gray-50">
+            <td className="px-6 py-4 border-t border-gray-200">{item.course_name}</td>
+            <td className="px-6 py-4 border-t border-gray-200">{item.fees}</td>
+            <td className="px-6 py-4 border-t border-gray-200">{item.perYearFees}</td>
+            <td className="px-6 py-4 border-t border-gray-200">
+              <button 
+                onClick={() => handleDelete(item._id)} 
+                className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-full"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+) : (
+  <div className="flex items-center justify-center h-48">
+    <p className="text-gray-500 text-lg">No courses available</p>
+  </div>
+)}
 
-      return (
-        <ul className='mb-4 hover:shadow-lg transi duration-500 hover:shadow-orange-300'>
-            <div className='bg-blue-100 p-4 rounded-lg shadow-md'>
-                <li className='mb-2'>
-                    <span className='font-semibold'>Course Name:</span> {item.course_name}
-                </li>
-                <li className='mb-2'>
-                    <span className='font-semibold'>Total Course Fees:</span> {item.fees} Rs.
-                </li>
-                <li className='mb-2'>
-                    <span className='font-semibold'>Per Year Fees:</span> {item.perYearFees} Rs.
-                </li>
-                <button 
-                    onClick={() => handleDelete(item._id)} 
-                    className='mt-2 py-2 px-4 bg-red-700 text-white rounded hover:bg-red-800 transition duration-300'
-                >
-                    Delete
-                </button>
-            </div>
-        </ul>
-      ) 
-    }) :<><center>No courses available</center></>
-  }
     </>
   )
 }

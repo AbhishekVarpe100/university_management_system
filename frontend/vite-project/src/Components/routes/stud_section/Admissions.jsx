@@ -9,7 +9,6 @@ function Admissions() {
   const [name,setName]=useState('');
   const [marks10,setMarks10]=useState('');
   const [marks12,setMarks12]=useState('');
-
   const [ad_data,setAdData]=useState([]);
 
 

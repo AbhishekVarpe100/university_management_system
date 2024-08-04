@@ -27,6 +27,7 @@ import Add_blogs from './Components/routes/admin_section/Add_blogs';
 import Student_voice from './Components/routes/admin_section/Student_voice';
 import Admission_adm from './Components/routes/admin_section/Admissions_adm';
 import All_Admissions from './Components/routes/admin_section/All_Admissions';
+import Add_Subjects from './Components/routes/admin_section/Add_Subjects';
 
 
 function App() {
@@ -141,8 +142,8 @@ useEffect(() => {
 
         <Route path='admission_adm' element={<Admission_adm></Admission_adm>}>
         <Route path='new_course' element={<New_course></New_course>}></Route>
-        <Route path='all_adm' element={<All_Admissions></All_Admissions>}></Route>
-        
+        <Route path='all_adm' element={<All_Admissions></All_Admissions>}></Route>        
+        <Route path='add_sub' element={<Add_Subjects></Add_Subjects>}></Route>
         </Route>
 
 
