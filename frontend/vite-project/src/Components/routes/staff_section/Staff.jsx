@@ -65,21 +65,11 @@ function Staff() {
                   
                   <li className="mb-2">
                     <Link
-                      to="/profile/examinations"
+                      to="/staff/"
                       className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
                       onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
                     >
-
-                      <span className="flex items-center">Examinations</span>
-                    </Link>
-                  </li>
-                  <li className="mb-2">
-                    <Link
-                      to="/staff/admissions"
-                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
-                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
-                    >
-                      Admissions
+                      Student results
                     </Link>
                   </li>
                   <li className="mb-2">
@@ -107,7 +97,7 @@ function Staff() {
                       onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
                     >
                       <span className="flex items-center">
-                          Blogs
+                          Blogs 
                       </span>
                       
                     </Link>

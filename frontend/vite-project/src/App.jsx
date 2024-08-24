@@ -30,6 +30,7 @@ import All_Admissions from './Components/routes/admin_section/All_Admissions';
 import Add_Subjects from './Components/routes/admin_section/Add_Subjects';
 import About from './Components/routes/stud_section/About';
 import Exams from './Components/routes/admin_section/Exams';
+import Stud_results from './Components/routes/staff_section/Stud_results';
 
 
 function App() {
@@ -158,9 +159,9 @@ useEffect(() => {
 
 
           </Route>
-
             <Route path="/staff" element={<Staff></Staff>}> 
               <Route path='/staff/*' element={<StaffRoutes></StaffRoutes>}></Route>
+              <Route index element={<Stud_results></Stud_results>}></Route>
             </Route>  
             <Route path="/profile" element={<Profile/>}>
                <Route index element={<About></About>}></Route>

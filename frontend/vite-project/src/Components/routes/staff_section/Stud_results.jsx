@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 
-function Exam(){
+function Stud_results(){
 
     const [data,setData]=useState([]);
     const [change,setChange]=useState(false);
@@ -27,7 +28,7 @@ function Exam(){
         <>
 
 <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Exam Data</h1>
+            <h1 className="text-2xl font-bold mb-4">Result generation</h1>
             {data.length > 0 ? (
                 <div className="overflow-x-auto">
                     <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
@@ -48,7 +49,8 @@ function Exam(){
                         </thead>
                         <tbody>
                             {data.map((item) => (
-                                <tr key={item._id} className="hover:bg-gray-50">
+                                
+                                    <tr key={item._id} className="hover:bg-gray-50">
                                     <td className="p-2 border-b border-gray-200">{item.name}</td>
                                     <td className="p-2 border-b border-gray-200">{item.course}</td>
                                     <td className="p-2 border-b border-gray-200">{item.prn}</td>
@@ -60,8 +62,18 @@ function Exam(){
                                     <td className="p-2 border-b border-gray-200">{item.sub6}</td>
                                     <td className="p-2 border-b border-gray-200">{item.sub7}</td>
 
-                                    {item.hallticket_status? <div className='bg-blue-500 text-white '>Hallticket released</div>:<button onClick={()=>handleRelease(item._id)} className='bg-red-500 text-white hover:bg-red-600 transition duration-500'>Relese Hallticket</button>} 
+                                    <td>
+
+
+{
+    !item.hallticket_status?<div className='text-red-500 underline'>Not appeared</div>:( (!item.result_status? <Link className='text-blue-700 underline font-bold hover:text-blue-500' to={`/staff/fill_marks/${item._id}`}>Fill marks</Link>:<div className='text-green-600 font-bold'>Result created</div>) ) }
+                                        
+                                       
+                                    </td> 
                                 </tr>
+
+                                
+                                
                             ))}
                         </tbody>
                     </table>
@@ -74,4 +86,4 @@ function Exam(){
     )
 }
 
-export default Exam;
+export default Stud_results;

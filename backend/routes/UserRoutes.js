@@ -515,8 +515,18 @@ doc.pipe(fs.createWriteStream(file));
 const hallTicket=await Hall_tickets({username:data[0].username,email:data[0].email,pdfFile:file});
 hallTicket.save();
 
+let borderWidth = 2;
+let borderColor='black';
+let margin = 20;
+
+doc.lineWidth(borderWidth)
+   .strokeColor(borderColor)
+   .rect(margin, margin, doc.page.width - 2 * margin, doc.page.height - 2 * margin)
+   .stroke();
+
 // Add document title
-doc.fontSize(20).text('Student Hall Ticket', { align: 'center' });
+doc.fontSize(30).fillColor('red').text('AcademiaHub University',{align:'center'})
+doc.fontSize(20).fillColor('blue').text('Student Hall Ticket', { align: 'center'});
 
 // Add some spaces
 doc.moveDown(2);
@@ -580,6 +590,105 @@ router.get('/download_hallticket', async(req, res) => {
     }
   });
 });
+
+
+router.get('/stud_exam_data',async(req,res)=>{
+  const id=req.query.id;
+  const data=await Exam.findById(id);
+  res.json(data);
+})
+
+
+router.post('/create_result',async(req,res)=>{
+  const studentData = req.body;
+  await Exam.findByIdAndUpdate({_id:studentData._id},{$set:{result_status:true}});
+  const generateStudentResultPDF = (studentData, outputPath) => {
+    const doc = new PDFDocument();
+  
+    // Pipe the PDF to a writable stream
+    doc.pipe(fs.createWriteStream(outputPath));
+  
+    // Add a border to the entire page
+    doc.rect(20, 20, doc.page.width - 40, doc.page.height - 40).stroke();
+  
+    // Title
+    doc.fontSize(25).text('AcademiaHub University', {
+      align: 'center',
+    });
+    doc.moveDown();
+    doc.fontSize(20).text('Student Result', {
+      align: 'center',
+    });
+  
+    doc.moveDown();
+  
+    // Student Information
+    doc.fontSize(12).text(`Name: ${studentData.name}`);
+    doc.text(`PRN: ${studentData.prn}`);
+    doc.text(`Course: ${studentData.course}`);
+    doc.text(`Email: ${studentData.email}`);
+    doc.moveDown();
+  
+    // Draw Table Header
+    doc.fontSize(12).font('Helvetica-Bold');
+    doc.text('Subject', 100, doc.y, { continued: true });
+    doc.text('Marks', 350, doc.y);
+    doc.moveDown();
+
+    // Draw a line under the header
+    doc.moveTo(80, doc.y).lineTo(doc.page.width - 80, doc.y).stroke();
+    doc.moveDown(0.5);
+  
+    // Table Content
+    doc.font('Helvetica');
+    const subjects = [
+      { name: studentData.sub1, marks: studentData.sub1m },
+      { name: studentData.sub2, marks: studentData.sub2m },
+      { name: studentData.sub3, marks: studentData.sub3m },
+      { name: studentData.sub4, marks: studentData.sub4m },
+      { name: studentData.sub5, marks: studentData.sub5m },
+      { name: studentData.sub6, marks: studentData.sub6m },
+      { name: studentData.sub7, marks: studentData.sub7m },
+    ];
+  
+    subjects.forEach((subject) => {
+      doc.text(subject.name, 100, doc.y + 10, { continued: true });
+      doc.text(subject.marks, 350, doc.y);
+      doc.moveDown(0.5);
+
+      // Draw a line after each row
+      doc.moveTo(80, doc.y).lineTo(doc.page.width - 80, doc.y).stroke();
+      doc.moveDown(0.5);
+    });
+  
+    // Footer
+    doc.moveDown(2);
+    // doc.fontSize(12).text('Hall Ticket Status: ' + (studentData.hallticket_status ? 'Issued' : 'Not Issued'), {
+    //   align: 'right',
+    // });
+
+    const totalMarks=Number.parseInt(studentData.sub1m)+Number.parseInt(studentData.sub2m)+Number.parseInt(studentData.sub3m)+Number.parseInt(studentData.sub4m)+Number.parseInt(studentData.sub5m)+Number.parseInt(studentData.sub6m)+Number.parseInt(studentData.sub7m);
+
+    doc.text(`Total marks : ${totalMarks} / 700`);
+    // doc.text(`Percentage : ${String(totalMarks/7).slice(0,5)}`);
+
+    doc.text(`Percentage : ${(totalMarks/7)<35 ? 'Fail': (((studentData.sub1m<35 || studentData.sub2m<35 ||studentData.sub3m<35 ||studentData.sub4m<35 ||studentData.sub5m<35 ||studentData.sub6m<35 ||studentData.sub7m<35)?'_':`${String(totalMarks/7).slice(0,5)}`))}`)
+    doc.text(`Result : ${(totalMarks/7)<35 ? 'Fail': (((studentData.sub1m<35 || studentData.sub2m<35 ||studentData.sub3m<35 ||studentData.sub4m<35 ||studentData.sub5m<35 ||studentData.sub6m<35 ||studentData.sub7m<35)?'Fail':'Pass'))}`)
+
+    doc.text(`${(totalMarks/7)<35?'Better luck next time !':(((studentData.sub1m <35 || studentData.sub2m<35 ||studentData.sub3m<35 ||studentData.sub4m<35 ||studentData.sub5m<35 ||studentData.sub6m<35 ||studentData.sub7m<35)?'Better luck next time !':'Congratulations! you are passed.'))}`,{align:"center"});
+  
+    // Finalize the PDF and end the stream
+    doc.end();
+  };
+  // Output PDF path
+  const outputPath = `${studentData.prn}_result.pdf`;
+  
+  // Generate the PDF
+  generateStudentResultPDF(studentData, outputPath);
+  
+  console.log('PDF generated successfully.');
+  res.json("Hello")
+})
 
 // const handleDownload = async () => {
 //   try {

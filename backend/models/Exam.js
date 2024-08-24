@@ -57,6 +57,9 @@ const examSchema=new Schema({
     hallticket_status:{
         type:Boolean,
     },
+    result_status:{
+        type:Boolean,
+    },
 })
 
 const Exam=mongoose.model('Exam',examSchema);
