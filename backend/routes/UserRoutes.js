@@ -724,6 +724,12 @@ router.get('/download_result', async(req, res) => {
 });
 
 
+router.get('/admission_data',async(req,res)=>{
+  const data=await Admission.find();
+  res.json(data);
+})
+
+
 
 
 // const handleDownload = async () => {
