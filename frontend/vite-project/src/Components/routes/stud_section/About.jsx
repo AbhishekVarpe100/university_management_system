@@ -3,8 +3,8 @@ import '../../css/About.css';
 
 function About() {
   return (
-    <div className="about-container py-10 bg-gray-100 flex items-center justify-center">
-      <div className="about-content  w-full bg-gradient-to-br from-blue-200 via-blue-100 to-blue-500 p-8 md:p-12 rounded-lg shadow-lg">
+    <div className="about-containe flex items-center justify-center">
+      <div className="about-content  w-full  p-8 md:p-12 rounded-lg shadow-lg">
         <h1 className="text-4xl font-bold mb-6 text-gray-800">About AcademiaHub University</h1>
         <p className="mb-6 text-gray-700">Welcome to AcademiaHub University, a leading institution dedicated to excellence in education, research, and innovation. Established with the vision of creating a nurturing environment for intellectual growth and personal development, AcademiaHub University stands at the forefront of academic excellence and cutting-edge research.</p>
         <div className="mb-6">

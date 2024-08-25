@@ -58,7 +58,7 @@ function Admin() {
         <div>
         <div className="flex py-2">
             {/* Sidebar */}
-            <div className={`bg-indigo-200 sidebar overflow-y-auto text-white w-64 min-h-screen flex-shrink-0 ${isSidebarOpen ? '' : 'hidden md:block'}`}>
+            <div className={`bg-gray-300 sidebar overflow-y-auto text-white w-64 min-h-screen flex-shrink-0 ${isSidebarOpen ? '' : 'hidden md:block'}`}>
               <div className="p-4">
                 <h2 className="text-2xl font-bold mb-6">Content</h2>
                 <ul>

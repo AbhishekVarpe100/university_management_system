@@ -18,6 +18,7 @@ const Subject = require("../models/Subjects");
 const Exam = require("../models/Exam");
 const Hall_tickets=require('../models/Hall_tickets');
 const PDFDocument=require('pdfkit');
+const Result = require("../models/Result");
 
 require("../Connection");
 
@@ -602,6 +603,9 @@ router.get('/stud_exam_data',async(req,res)=>{
 router.post('/create_result',async(req,res)=>{
   const studentData = req.body;
   await Exam.findByIdAndUpdate({_id:studentData._id},{$set:{result_status:true}});
+
+  
+
   const generateStudentResultPDF = (studentData, outputPath) => {
     const doc = new PDFDocument();
   
@@ -667,19 +671,27 @@ router.post('/create_result',async(req,res)=>{
     //   align: 'right',
     // });
 
-    const totalMarks=Number.parseInt(studentData.sub1m)+Number.parseInt(studentData.sub2m)+Number.parseInt(studentData.sub3m)+Number.parseInt(studentData.sub4m)+Number.parseInt(studentData.sub5m)+Number.parseInt(studentData.sub6m)+Number.parseInt(studentData.sub7m);
+    var totalMarks=Number.parseInt(studentData.sub1m)+Number.parseInt(studentData.sub2m)+Number.parseInt(studentData.sub3m)+Number.parseInt(studentData.sub4m)+Number.parseInt(studentData.sub5m)+Number.parseInt(studentData.sub6m)+Number.parseInt(studentData.sub7m);
 
     doc.text(`Total marks : ${totalMarks} / 700`);
     // doc.text(`Percentage : ${String(totalMarks/7).slice(0,5)}`);
 
-    doc.text(`Percentage : ${(totalMarks/7)<35 ? 'Fail': (((studentData.sub1m<35 || studentData.sub2m<35 ||studentData.sub3m<35 ||studentData.sub4m<35 ||studentData.sub5m<35 ||studentData.sub6m<35 ||studentData.sub7m<35)?'_':`${String(totalMarks/7).slice(0,5)}`))}`)
+    doc.text(`Percentage : ${(totalMarks/7)<35 ? '_': (((studentData.sub1m<35 || studentData.sub2m<35 ||studentData.sub3m<35 ||studentData.sub4m<35 ||studentData.sub5m<35 ||studentData.sub6m<35 ||studentData.sub7m<35)?'_':`${String(totalMarks/7).slice(0,5)}`))}`)
     doc.text(`Result : ${(totalMarks/7)<35 ? 'Fail': (((studentData.sub1m<35 || studentData.sub2m<35 ||studentData.sub3m<35 ||studentData.sub4m<35 ||studentData.sub5m<35 ||studentData.sub6m<35 ||studentData.sub7m<35)?'Fail':'Pass'))}`)
 
     doc.text(`${(totalMarks/7)<35?'Better luck next time !':(((studentData.sub1m <35 || studentData.sub2m<35 ||studentData.sub3m<35 ||studentData.sub4m<35 ||studentData.sub5m<35 ||studentData.sub6m<35 ||studentData.sub7m<35)?'Better luck next time !':'Congratulations! you are passed.'))}`,{align:"center"});
+
+    const addResult=Result({username:studentData.username,email:studentData.email,name:studentData.name,course:studentData.course,prn:studentData.prn,sub1:studentData.sub1,sub1m:studentData.sub1m,sub2:studentData.sub2,sub2m:studentData.sub2m,sub3:studentData.sub3,sub3m:studentData.sub3m,sub4:studentData.sub4,sub4m:studentData.sub4m,sub5:studentData.sub5,sub5m:studentData.sub5m,sub6:studentData.sub6,sub6m:studentData.sub6m,sub7:studentData.sub7,sub7m:studentData.sub7m,total:totalMarks,percent:(totalMarks/7)<35 ? '_': (((studentData.sub1m<35 || studentData.sub2m<35 ||studentData.sub3m<35 ||studentData.sub4m<35 ||studentData.sub5m<35 ||studentData.sub6m<35 ||studentData.sub7m<35)?'_':`${String(totalMarks/7).slice(0,5)}`)),result:(totalMarks/7)<35 ? 'Fail': (((studentData.sub1m<35 || studentData.sub2m<35 ||studentData.sub3m<35 ||studentData.sub4m<35 ||studentData.sub5m<35 ||studentData.sub6m<35 ||studentData.sub7m<35)?'Fail':'Pass')),result_file:outputPath})
+  
+    addResult.save();
   
     // Finalize the PDF and end the stream
     doc.end();
   };
+
+
+ 
+
   // Output PDF path
   const outputPath = `${studentData.prn}_result.pdf`;
   
@@ -689,6 +701,30 @@ router.post('/create_result',async(req,res)=>{
   console.log('PDF generated successfully.');
   res.json("Hello")
 })
+
+router.get('/get_result',async(req,res)=>{
+  const prn=req.query.prn;
+  const data=await Result.find({prn})
+  res.json({data:data});
+  console.log("He")
+})
+
+
+
+
+router.get('/download_result', async(req, res) => {
+  const {file}=req.query;
+  const filePath = path.join(__dirname, `../${file}`);
+  res.download(filePath, `${file}`, (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error occurred while downloading the file');
+    }
+  });
+});
+
+
+
 
 // const handleDownload = async () => {
 //   try {
