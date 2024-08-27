@@ -11,6 +11,7 @@ function Examinations() {
   const [data, setData_] = useState([]);
   const [hallTicket,setHallTicket]=useState(false);
   const [change,setChange]=useState(false);
+  const [th,getTh]=useState(localStorage.getItem('theme'));
   const [formData,setFormData]=useState({
     username:username,
     email:email,
@@ -115,6 +116,8 @@ function Examinations() {
   },[])
 
   return (  
+    <div>
+
     <div>
 
       {
@@ -331,6 +334,7 @@ function Examinations() {
   
 
 
+    </div>
     </div>
   )
 }

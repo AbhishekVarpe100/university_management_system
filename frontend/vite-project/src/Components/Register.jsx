@@ -33,6 +33,7 @@ const RegistrationForm = () => {
           'Content-Type': 'application/json'
         }
       });
+      localStorage.setItem('theme', 'light');
 
       setTimeout(() => {
         if (response.data === 'user_exist') {

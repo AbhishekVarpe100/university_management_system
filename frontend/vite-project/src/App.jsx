@@ -1,4 +1,8 @@
 import { useEffect, useState } from 'react';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { MdDarkMode } from "react-icons/md";
+import { MdLightMode } from "react-icons/md";
 import '../index.css';
 import axios from 'axios';
 import Register from './Components/Register';
@@ -41,11 +45,43 @@ function App() {
     localStorage.removeItem('token_expires_in');
     window.location.reload();
   };
+  let [theme, setTheme] = useState(localStorage.getItem('theme'));
+  const [getTheme,setGetTheme]=useState('');
 
   const username=useSelector((state)=>state.username);
   const email=useSelector((state)=>state.email);
   const type=useSelector((state)=>state.type);
   const [data,setData]=useState({});
+
+  const [th,getTh]=useState(localStorage.getItem('theme'));
+
+  // const handleChange = async (event) => {
+  //   await setChecked(event.target.checked);
+  //   await localStorage.setItem('theme',event.target.checked);
+  //   window.location.reload(true);
+  // };
+
+  const handleTheme = async () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+
+    try {
+      await axios.post('http://localhost:3000/change_theme', {
+        theme: newTheme,
+        username,
+        email,
+      });
+      localStorage.setItem('theme', newTheme);
+      window.location.reload();
+    } catch (error) {
+      console.error('Error updating theme:', error);
+    }
+  };
+
+
+ const getTheme_=async()=>{
+ const res= await axios.get('http://localhost:3000/get_theme',{params:{username,email}});
+ }
 
   const dataObj={
     username:username,
@@ -57,9 +93,11 @@ function App() {
     const response=await axios.post('http://localhost:3000/getprofile_data',dataObj);
     setData(response.data)
   }
+  
 
 useEffect(() => {
   getData();
+  getTheme_();
 }, []);
 
 
@@ -67,9 +105,9 @@ useEffect(() => {
   return (
     <>
       <BrowserRouter>
-        <nav className="fixed top-0 left-0 right-0 bg-gray-800 text-white flex items-center justify-between p-6 z-50 shadow-md">
+        <nav className={`fixed top-0 left-0 ${th=='dark'? 'bg-black text-white':'bg-white text-black'} right-0  text-white flex items-center justify-between p-6 z-50 shadow-md`}>
           <div className="space-x-4 flex items-center">
-            <Link to="/" className="hover:underline hover:text-gray-400">
+            <Link to="/" className={`hover:underline ${th=='dark'? ' text-white':'bg-white text-black'}`}>
               Home
             </Link>
             {username && email ? (
@@ -77,7 +115,7 @@ useEffect(() => {
                 <Link
                   onClick={handleLogout}
                   to="/login"
-                  className="hover:underline hover:text-gray-400"
+                  className={`hover:underline ${th=='dark'? 'k text-white':'bg-white text-black'}`}
                 >
                   Log Out
                 </Link>
@@ -86,26 +124,61 @@ useEffect(() => {
               <>
                 <Link
                   to="/login"
-                  className="hover:underline hover:text-gray-400"
+                  className={`hover:underline ${th=='dark'? 'text-white':'bg-white text-black'}`}
                 >
                   Login   
                 </Link>
+
                 <Link
                   to="/register"
-                  className="hover:underline hover:text-gray-400"
+                  className={`hover:underline ${th=='dark'? ' text-white':'bg-white text-black'}`}
                 >
                   Register
                 </Link>
               </>
             )}
+
+
+{username && email && (
+  <div className="flex items-center space-x-4">
+    <label className="flex items-center cursor-pointer">
+      <div className="relative">
+        <input
+          type="checkbox"
+          id="theme-toggle"
+          className="sr-only"
+          checked={theme === 'dark'}
+          onChange={handleTheme}
+        />
+        <div
+          className={`w-14 h-8 bg-gray-300 rounded-full shadow-inner transition duration-300 ease-in-out ${theme === 'dark' ? 'bg-gray-600' : ''}`}
+        ></div>
+        <div
+          className={`absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-300 ease-in-out ${theme === 'dark' ? 'translate-x-full bg-gray-800' : ''}`}
+        ></div>
+      </div>
+      <div className={`hover:underline ${th=='dark'? 'text-white':'bg-white text-black' } ml-3 text-sm font-medium`}>
+      {theme === 'light' ? (  
+        <MdLightMode className="text-yellow-500 w-5 h-5" />
+      ) : (
+      <MdDarkMode className="text-blue-700 w-5 h-5" />
+      )}
+      </div>
+    </label>
+  </div>
+)}
+
+           
+
+            
           </div>
 
           {
             localStorage.getItem('type')=='admin' || (!localStorage.getItem('email')  && !localStorage.getItem('username')) ? "":(
               <div className="flex items-center space-x-4">
                 <div className="text-right">
-                  <span>{username}</span><br />
-                  <span>{email}</span>
+                  <span className={`${th=='dark'? 'text-white':'bg-white text-black' }`}>{username}</span><br />
+                  <span className={`${th=='dark'? 'text-white':'bg-white text-black' }`}>{email}</span>
                 </div>
                 <Link to='/profile_img'>
                 <img title='profile'

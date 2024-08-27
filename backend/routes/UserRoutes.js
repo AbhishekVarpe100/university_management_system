@@ -216,6 +216,35 @@ router.post('/getprofile_data',async (req,res)=>{
 })  
 
 
+
+router.post('/change_theme', async (req, res) => {
+  const { theme, username, email } = req.body;
+  try {
+    const result = await User.updateOne({ username, email }, { $set: { theme } });
+
+    if (result.nModified === 0) {
+      return res.status(404).json({ message: 'User not found or theme already set to the same value.' });
+    }
+
+    res.status(200).json({ message: 'Theme updated successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating theme.', error });
+  }
+});
+
+
+router.get('/get_theme',async(req,res)=>{
+  try{
+    const user=await User.findOne({username:req.query.username,email:req.query.email});
+    res.json(user.theme)
+  }
+  catch(err){
+    console.log(err);
+  }
+})
+
+
+
 router.post('/delete_photo',async (req,res)=>{
   const {id,type,photo}=req.body;
   if(type=='student'){

@@ -7,7 +7,8 @@ const initialState = {
   email:localStorage.getItem('email')? localStorage.getItem('email'): "",
   token:'',
   token_expires_in:'',
-  type:localStorage.getItem('type')
+  type:localStorage.getItem('type'),
+  darkTheme:false,
 };
 
 // Reducer function
@@ -33,6 +34,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         token_expires_in: action.payload
       };
+      case 'THEME':
+        return {
+          ...state,
+          darkTheme:localStorage.getItem('theme')
+        }
     default:
       return state;
   }

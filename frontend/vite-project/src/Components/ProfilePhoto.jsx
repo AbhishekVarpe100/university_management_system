@@ -14,6 +14,7 @@ function ProfilePhoto() {
   const email=useSelector((state)=>state.email);
   const type=localStorage.getItem('type');
   const [data,setData]=useState({});
+  const [th,getTh]=useState(localStorage.getItem('theme'));
 
   const  handleDelete=async(id,type,photo)=>{
     const res=await axios.post('http://localhost:3000/delete_photo',{id,type,photo})
@@ -55,8 +56,8 @@ function ProfilePhoto() {
   return (
     <>
       {loader ? (
-        <div className="p-10">
-          <div className="lds-roller">
+        <div className='p-10'>
+          <div className='lds-roller'>
             <div></div>
             <div></div>
             <div></div>
@@ -68,10 +69,10 @@ function ProfilePhoto() {
           </div>
         </div>
       ) : (
-        <div className="p-10">
-          
-        <section className="p-6 bg-white rounded-lg shadow-2xl max-w-md mx-auto">
-        <h1 className='text-lg'>Your Profile</h1>
+        <div className={` ${th=='dark'? 'bg-black text-white':'bg-white text-black'} p-10`}>
+    
+        <section className={`text-2xl ${th=='dark'? 'bg-gray-600 text-black':'bg-white text-black'} text-lg p-6  rounded-lg shadow-2xl max-w-md mx-auto`} >
+        <h1 className={`text-2xl ${th=='dark'? 'text-white':'bg-white text-black'} text-lg`}  >Your Profile</h1>
   <div className="flex flex-col items-center">
     <img
       src={!data.photo ? 'http://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png' : `http://localhost:3000/Profile_Images/${data.photo}`}
@@ -102,9 +103,9 @@ function ProfilePhoto() {
       </div>
     )}
     <div className="text-center">
-      <strong className="text-xl">{data.username}</strong>
+      <strong className={`text-xl ${th=='dark'? 'text-white':' text-black'} text-lg`}>{data.username}</strong>
       <br />
-      <strong className="text-gray-600">{data.email}</strong>
+      <strong className={`text-xl ${th=='dark'? 'text-white':' text-black'} text-lg`}>{data.email}</strong>
       <div className="mt-4 space-y-2">
         <Link
           to={`/profile_img/edit_info/${data._id}/${type}`}

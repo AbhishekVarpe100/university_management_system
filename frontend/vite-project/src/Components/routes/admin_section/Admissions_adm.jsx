@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 function Admission_adm() {
+   
     return (
         <>
             <nav className="bg-gray-800 p-4 m-6">

@@ -13,6 +13,8 @@ import { CgNotes } from "react-icons/cg";
 function Profile() {
   const [tokenValid, setTokenValid] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const [th,getTh]=useState(localStorage.getItem('theme'));
   
 
   const toggleSidebar = () => {
@@ -59,14 +61,14 @@ function Profile() {
         <>
           <div className="flex my-4 py-4">
             {/* Sidebar */}
-            <div   className={`sidebar overflow-y-auto  bg-gray-300 text-white w-64 min-h-screen flex-shrink-0 ${isSidebarOpen ? '' : 'hidden md:block'}`}>
+            <div   className={`sidebar overflow-y-auto  ${th=='dark'? 'bg-black text-white':'bg-white text-black'} text-white w-64 min-h-screen flex-shrink-0 ${isSidebarOpen ? '' : 'hidden md:block'}`}>
               <div className="p-4">
-                <h2 className="text-2xl font-bold mb-6">Content</h2>
+                <h2 className={`text-2xl ${th=='dark'? 'bg-black text-white':'bg-white text-black'} font-bold mb-6`}>Content</h2>
                 <ul>
                   <li className="mb-2">
                     <Link
                       to="/profile/"
-                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      className="rounded block p-2 bg-gray-700 hover:bg-gray-600"
                       onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
                     >
                       About

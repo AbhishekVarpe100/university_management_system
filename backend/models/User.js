@@ -21,6 +21,11 @@ const userSchema = new Schema({
     photo:{
         type:String,
     }
+    ,
+    theme:{
+        type:String,
+        default:'light'
+    }
 });
 
 // Create the user model
