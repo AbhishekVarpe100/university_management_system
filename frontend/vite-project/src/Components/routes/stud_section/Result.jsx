@@ -6,6 +6,7 @@ function Result() {
   const [data,setData]=useState([]);
   const [change,setChange]=useState(false);
   const [prn,setPrn]=useState(0);
+  const [th,getTh]=useState(localStorage.getItem('theme'));
   const handleSubmit=async(e)=>{
     e.preventDefault();
    const res=await axios.get('http://localhost:3000/get_result',{params:{prn}});
@@ -79,31 +80,31 @@ function Result() {
           </tr>
         </thead>
         <tbody>
-          <tr className="bg-white">
+          <tr className={` ${th=='dark'? 'bg-black text-white':'bg-white text-black'}`}>
             <td className="p-3 border">{data[0].sub1}</td>
             <td className="p-3 border">{data[0].sub1m}</td>
           </tr>
-          <tr className="bg-gray-50">
+          <tr className={` ${th=='dark'? 'bg-black text-white':'bg-white text-black'}`}>
             <td className="p-3 border">{data[0].sub2}</td>
             <td className="p-3 border">{data[0].sub2m}</td>
           </tr>
-          <tr className="bg-white">
+          <tr className={` ${th=='dark'? 'bg-black text-white':'bg-white text-black'}`}>
             <td className="p-3 border">{data[0].sub3}</td>
             <td className="p-3 border">{data[0].sub3m}</td>
           </tr>
-          <tr className="bg-gray-50">
+          <tr className={` ${th=='dark'? 'bg-black text-white':'bg-white text-black'}`}>
             <td className="p-3 border">{data[0].sub4}</td>
             <td className="p-3 border">{data[0].sub4m}</td>
           </tr>
-          <tr className="bg-white">
+          <tr className={` ${th=='dark'? 'bg-black text-white':'bg-white text-black'}`}>
             <td className="p-3 border">{data[0].sub5}</td>
             <td className="p-3 border">{data[0].sub5m}</td>
           </tr>
-          <tr className="bg-gray-50">
+          <tr className={` ${th=='dark'? 'bg-black text-white':'bg-white text-black'}`}>
             <td className="p-3 border">{data[0].sub6}</td>
             <td className="p-3 border">{data[0].sub6m}</td>
           </tr>
-          <tr className="bg-white">
+          <tr className={` ${th=='dark'? 'bg-black text-white':'bg-white text-black'}`}>
             <td className="p-3 border">{data[0].sub7}</td>
             <td className="p-3 border">{data[0].sub7m}</td>
           </tr>
@@ -111,13 +112,13 @@ function Result() {
       </table>
       <tfoot>
         <tr>
-          <td className="p-3">Total Marks : {data[0].total} / 700</td>
+          <td className={` ${th=='dark'? 'bg-black text-white':'bg-white text-black'} p-3`}>Total Marks : {data[0].total} / 700</td>
         </tr>
         <tr>
-          <td className="p-3">Percentage : {data[0].percent} %</td>
+          <td className={` ${th=='dark'? 'bg-black text-white':'bg-white text-black'} p-3`}>Percentage : {data[0].percent} %</td>
         </tr>
         <tr>
-          <td className="p-3 ">Result : <strong className={data[0].result=='Pass'? 'text-blue-600':'text-red-600'}>{data[0].result}</strong></td> 
+          <td className={` ${th=='dark'? 'bg-black text-white':'bg-white text-black'}`}>Result : <strong className={data[0].result=='Pass'? 'text-blue-600':'text-red-600'}>{data[0].result}</strong></td> 
           <td>  <button onClick={()=>handleDownload(data[0].result_file,data[0].username)} className='text-red-500 font-bold hover:underline hover:text-red-600'> Download result</button></td>
         </tr>
       </tfoot>  

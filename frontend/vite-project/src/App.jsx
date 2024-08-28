@@ -139,7 +139,7 @@ useEffect(() => {
             )}
 
 
-{username && email && (
+{username && email && localStorage.getItem('type')=='student' && (
   <div className="flex items-center space-x-4">
     <label className="flex items-center cursor-pointer">
       <div className="relative">
