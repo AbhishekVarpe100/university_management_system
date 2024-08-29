@@ -3,6 +3,7 @@ import axios from 'axios';
 function Notices() {
 
   const [data,setData]=useState([]);
+  const [th,getTh]=useState(localStorage.getItem('theme'));
 
   const getData=async()=>{
     const res=await axios.get('http://localhost:3000/get_notices');
@@ -19,7 +20,7 @@ function Notices() {
     data.length > 0 ? 
     data.map((ele) => {
       return (
-        <div key={ele._id} className='bg-white p-5 mb-3 rounded-lg shadow-lg hover:bg-gray-100 transition duration-300'>
+        <div key={ele._id} className={` rounded-xl ${th=='dark'? 'bg-black text-white':'bg-gray-200 text-black'} p-5 mb-3`}>
           {ele.notice}
         </div>
       );
