@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const cache=require('node-cache')
 const User = require('../models/User');
 const Notice = require('../models/Announcement');
 const Staff=require('../models/Staff');
@@ -19,6 +20,7 @@ const Exam = require("../models/Exam");
 const Hall_tickets=require('../models/Hall_tickets');
 const PDFDocument=require('pdfkit');
 const Result = require("../models/Result");
+const nodeCache=new cache({stdTTL:60,checkperiod:120})
 
 require("../Connection");
 
@@ -297,6 +299,7 @@ router.post('/edit_info',async(req,res)=>{
 
 router.post('/create_notice',async(req,res)=>{
   const notice=req.body.notice;
+  nodeCache.del('data');
   const newNotice=new Notice({notice});
   newNotice.save();
   res.json("response");
@@ -304,11 +307,21 @@ router.post('/create_notice',async(req,res)=>{
 
 router.get('/get_notices',async(req,res)=>{
   const data=await Notice.find();
-  res.json(data).status(200)
+  nodeCache.set('data',JSON.stringify(data));
+  if(nodeCache.get('data')){
+    res.json(JSON.parse(nodeCache.get('data'))).status(200)
+    console.log("Cache data")
+  }
+  else {
+
+    res.json(data).status(200)
+    console.log("Real data")
+  }
 })
 
 router.post('/delete_notice',async(req,res)=>{
   const id=req.body.id;
+  nodeCache.del('data');
   await Notice.findByIdAndDelete(id);
   res.json("deleted");
 })
