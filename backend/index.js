@@ -5,7 +5,6 @@ const cors=require('cors');
 const status=require('express-status-monitor')
 const compression=require('compression')
 // const morgan =require('morgan');
-
 app.use(compression())
 app.use(status())
 app.use(cors())
@@ -36,3 +35,5 @@ app.use(uploadRoutes);
 app.listen(3000,()=>{
     console.log(`App listening on port 3000`)
 })
+
+

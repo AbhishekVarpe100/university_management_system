@@ -20,6 +20,7 @@ const Exam = require("../models/Exam");
 const Hall_tickets=require('../models/Hall_tickets');
 const PDFDocument=require('pdfkit');
 const Result = require("../models/Result");
+const Messages = require("../models/Messages");
 const nodeCache=new cache({stdTTL:60,checkperiod:120})
 
 require("../Connection");
@@ -307,14 +308,13 @@ router.post('/create_notice',async(req,res)=>{
 
 router.get('/get_notices',async(req,res)=>{
   const data=await Notice.find();
-  nodeCache.set('data',JSON.stringify(data));
   if(nodeCache.get('data')){
     res.json(JSON.parse(nodeCache.get('data'))).status(200)
     console.log("Cache data")
   }
   else {
-
     res.json(data).status(200)
+    nodeCache.set('data',JSON.stringify(data));
     console.log("Real data")
   }
 })
@@ -770,6 +770,18 @@ router.get('/admission_data',async(req,res)=>{
   const data=await Admission.find();
   res.json(data);
 })
+
+
+router.get('/getMsg',async(req,res)=>{
+  const data=await Messages.find({username:req.query.username});
+  res.json(data)
+})
+
+router.get('/getMsgs',async(req,res)=>{
+  const data=await Messages.find();
+  res.json(data);
+})
+
 
 
 

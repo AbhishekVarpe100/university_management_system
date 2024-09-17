@@ -153,6 +153,15 @@ function Profile() {
                       <span className="flex items-center">Notice</span>
                     </Link>
                   </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/profile/chat"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      <span className="flex items-center">Message to admin</span>
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>

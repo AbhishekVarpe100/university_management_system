@@ -4,8 +4,7 @@ import { MdClose } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
 import {Link ,Outlet} from 'react-router-dom';
 function Admin() {
-
-
+  
   const [tokenValid,setTokenValid]=useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
@@ -135,6 +134,15 @@ function Admin() {
                       onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
                     >
                       Students voice
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/admin/stud_msgs"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      Students messages
                     </Link>
                   </li>
 

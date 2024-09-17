@@ -35,6 +35,8 @@ import Add_Subjects from './Components/routes/admin_section/Add_Subjects';
 import About from './Components/routes/stud_section/About';
 import Exams from './Components/routes/admin_section/Exams';
 import Stud_results from './Components/routes/staff_section/Stud_results';
+import StudentMsgs from './Components/routes/admin_section/StudentMsgs';
+import Reply from './Components/routes/admin_section/Reply';
 
 
 function App() {
@@ -215,6 +217,11 @@ useEffect(() => {
         <Route path='add_placements' element={<Add_Placements></Add_Placements>}></Route>
         <Route path='add_blogs' element={<Add_blogs></Add_blogs>}></Route>
         <Route path='stud_voice' element={<Student_voice></Student_voice>}></Route>
+
+        <Route path='stud_msgs' element={<StudentMsgs></StudentMsgs>}></Route>
+
+        <Route path='stud_msgs/reply/:username' element={<Reply></Reply>}></Route>
+
         <Route path='exam_applications' element={<Exams></Exams>}></Route>
 
 

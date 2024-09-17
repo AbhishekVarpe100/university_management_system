@@ -10,6 +10,7 @@ import Blogs from './routes/stud_section/Blogs';
 import ContactUs from './routes/stud_section/ContactUs';
 import Result from './routes/stud_section/Result';
 import Notices from './routes/stud_section/Notices';
+import Chat from './routes/stud_section/Chat';
 
 
 const Campus=lazy(()=>import('./routes/stud_section/Campus'))
@@ -29,6 +30,7 @@ function ProfileRoutes() {
         <Route path='contact_us' element={<ContactUs></ContactUs>}></Route>
         <Route path='results' element={<Result></Result>}></Route>
         <Route path='notices' element={<Notices></Notices>}></Route>
+        <Route path='chat' element={<Chat></Chat>}></Route>
     </Routes>
 
     </>
