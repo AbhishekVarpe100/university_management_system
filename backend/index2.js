@@ -25,7 +25,9 @@ io.on('connection', (socket) => {
         console.log("Payload:", payload);
 
         // Save the message to the database
-        const msg = new Msg({ username: payload.username, msg: payload.msg ,by:'user'});
+        const date=new Date()
+        const curr_time=date.toTimeString().split(' ')[0];
+        const msg = new Msg({ username: payload.username, msg: payload.msg ,by:'user',time:curr_time});
         await msg.save();
 
         // Emit the message to all connected clients
@@ -33,7 +35,9 @@ io.on('connection', (socket) => {
     });
 
     socket.on('adminreply',async (payload)=>{
-        const msg = new Msg({username:payload.username,reply:payload.message,by:'admin'})
+        const date=new Date()
+        const curr_time=date.toTimeString().split(' ')[0];
+        const msg = new Msg({username:payload.username,reply:payload.message,by:'admin',time:curr_time})
         await msg.save();
         io.emit('chat',payload);
     })

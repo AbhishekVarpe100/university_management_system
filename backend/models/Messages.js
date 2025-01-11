@@ -18,6 +18,9 @@ const msgSchema = new Schema({
     deleted:{
         type:Boolean,
         default:false
+    },
+    time:{
+        type:String
     }
 });
 

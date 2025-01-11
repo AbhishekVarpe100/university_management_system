@@ -229,8 +229,9 @@ function Chat() {
                                                 msg.reply ? 'bg-gray-200 text-gray-800' : 'bg-green-500 text-white'
                                             }`}
                                         >
-                                            <b><i>{msg.msg ? msg.msg : msg.reply}</i></b>
+                                            <b><i>{msg.msg ? msg.msg : msg.reply} </i></b>
                                         </div>
+                                        {msg.time}
                                     </>
                                 )}
                             </div>

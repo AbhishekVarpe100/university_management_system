@@ -88,7 +88,11 @@ function Reply() {
                                 }`}
                             >
                                 <b><i>{msg.msg ? msg.msg : msg.reply}</i></b>
-                            </div></>}
+                            </div>
+
+                            {msg.time}
+                            
+                            </>}
 
                             
                         </div>
