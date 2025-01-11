@@ -136,9 +136,10 @@ import { io } from 'socket.io-client';
 import axios from 'axios';
 import EmojiPicker from 'emoji-picker-react';
 import { FaBan } from "react-icons/fa";
-const socket = io.connect('http://localhost:5000');
+
 import image from './image.jpg'
 import image2 from './image2.jpg'
+const socket = io.connect('http://localhost:5000');
 
 function Chat() {
     const [msg, setMsg] = useState('');
@@ -188,7 +189,7 @@ function Chat() {
         // Apply background image
         <div className='bg-gray-100 h-screen'>
             <div className="flex flex-col h-screen" style={{ 
-                backgroundImage: `url(${theme=='dark'? image2:image})`, 
+                backgroundImage: `url({ ${theme=='dark'? "https://img.freepik.com/free-photo/beautiful-nature-landscape-with-mountains-lake_23-2150705972.jpg":''})`, 
                 backgroundSize: 'cover', 
                 backgroundRepeat: 'repeat' }}>
                 
@@ -215,7 +216,7 @@ function Chat() {
                                     <>
                                         {msg.by === 'user' && (
                                             <button
-                                                title="delete message"
+                                                title="Delete message"
                                                 onClick={() => handleDelete(msg._id)} // Call handleDelete with msg ID
                                                 className="text-red-600 text-2xl transition  hover:text-red-700 hidden group-hover:block ml-2"
                                             >
@@ -235,7 +236,7 @@ function Chat() {
                             </div>
                         ))
                     ) : (
-                        <div className="text-center text-white">No messages available</div>
+                        <div className="text-center text-gray-600">No messages available</div>
                     )}
                 </div>
 
@@ -247,11 +248,13 @@ function Chat() {
                     >
                         😀
                     </button>
+                    
                     {showEmojiPicker && (
                         <div className="absolute bottom-16 left-0 z-10">
                             <EmojiPicker onEmojiClick={handleEmojiClick} />
                         </div>
                     )}
+                    
                     <input
                         value={msg}
                         onChange={(e) => setMsg(e.target.value)}

@@ -36,7 +36,7 @@ function Campus() {
       <div className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading ? (
           videos.map((video, index) => (
-            <div key={video._id} className="flex flex-col hover:shadow-xl items-center p-4 rounded-lg shadow-md">
+            <div key={video._id} className="flex flex-col hover:shadow-2xl items-center p-4 rounded-lg shadow-md transition duration-500">
               <video
                 ref={(element) => (videoRefs.current[index] = element)}
                 controls

@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
         io.emit('chat',payload);
     })
 
+
     socket.on('delete_msg',async (payload)=>{
         await Msg.findByIdAndUpdate(payload.id,{$set:{deleted:true}});
         io.emit('chat');

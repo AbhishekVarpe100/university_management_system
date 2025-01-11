@@ -133,7 +133,7 @@ router.post('/login',async (req,res)=>{
 
   if(username=='admin@academiahub_uni'){
 
-    if(password=='admin_1200'){
+    if(password=='admin'){
       jwt.sign({username,email},secretKey,{expiresIn:'1h'},(err,token)=>{
         if(err){
           console.log(err)
@@ -495,7 +495,7 @@ router.post('/add_sub',async(req,res)=>{
 router.get('/get_sub_data',async(req,res)=>{
   const data=await Subject.find();
   res.json(data);
-  console.log("He")
+ 
 })
 
 router.delete('/delete_sub/:id',async(req,res)=>{

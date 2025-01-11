@@ -6,13 +6,16 @@ function Add_Subjects() {
     const [sub,setSub]=useState('');
     const [marks,setMarks]=useState('');
     const [subData,setSubData]=useState([]);
-
+    const [render,setRender]=useState(false)
     const handleSubmit=async(e)=>{
         e.preventDefault();
         const res=await axios.post('http://localhost:3000/add_sub',{sub,marks})
-        alert("Added")
-        setSub("");
-        setMarks("");
+        if(res){
+            alert("Added")
+            setSub("");
+            setMarks("");
+            setRender(prev=>!prev)
+        }
     }
 
     const getSubData=async()=>{
@@ -23,14 +26,18 @@ function Add_Subjects() {
     }
 
     const handleDelete=async (id)=>{
-        await axios.delete(`http://localhost:3000/delete_sub/${id}`);
+       const res= await axios.delete(`http://localhost:3000/delete_sub/${id}`);
         alert("Deleted")
+        if(res){
+            setRender(prev=>!prev)
+        }
+
     }
 
 
     useEffect(()=>{
         getSubData();
-    })
+    },[render])
 
   return (
     <div>
